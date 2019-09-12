@@ -3,6 +3,8 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  * Пример
@@ -70,8 +72,9 @@ return days
  */
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
-    x2: Double, y2: Double, r2: Double
-): Boolean = TODO()
+    x2: Double, y2: Double, r2: Double): Boolean = sqrt((x2 - x1).pow(2) + (y2 - y1).pow(2)) <= (r2 - r1)
+    //.pow(2.0)
+
 
 /**
  * Средняя
@@ -82,4 +85,18 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+
+
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
+    var shorterSide: Int = 0
+    var sideNumber2: Int = 0
+    val brickPass: Boolean
+    if (c >= a && c >= b) {shorterSide = a; sideNumber2 = b}
+    if (b >= a && b >= c) {shorterSide = a; sideNumber2 = c}
+    if (a >= b && a >= c) {shorterSide = c; sideNumber2 = b} //определение 2х самых коротких сторон
+
+    if (shorterSide <= r && sideNumber2 <= s || shorterSide <= s && sideNumber2 <= r) {brickPass = true}      //если короткие стороны меньше s и r, то кирпич прохходит
+    else {brickPass = false}
+
+return brickPass
+}
