@@ -6,6 +6,7 @@ import lesson1.task1.discriminant
 import ru.spbstu.wheels.intersperse
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -65,12 +66,12 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = if (((age == 1) || age % 10.0 == 1.0) && age != 11 && age != 111) "$age год"   //если возраст = 1 или оканчивается на 1, кроме 11 и 111, то ГОД
-else
-{
-    if ((age in 2..4 || age % 10 in 2..4) && age != 11 && age != 111 && age !in 5..20 && age !in 105..120) "$age года"      //если возраст в диапазоне от 2 до 4 или оканчивется на 2,3,4 и не равен 11 и 111 и не находится между 5...20 и не находится между 105...120 ГОДА
-    else "$age лет"
-}
+fun ageDescription(age: Int): String =
+    if ((age == 1 || age % 10 == 1) && age != 11 && age != 111) "$age год"   //если возраст = 1 или оканчивается на 1, кроме 11 и 111, то ГОД
+    else {
+        if ((age in 2..4 || age % 10 in 2..4) && age !in 5..20 && age !in 105..120) "$age года"      //если возраст в диапазоне от 2 до 4 или оканчивется на 2,3,4  и не находится между 5...20 и не находится между 105...120 ГОДА
+        else "$age лет"
+    }
 
 /**
  * Простая
@@ -82,19 +83,24 @@ else
 fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
-    t3: Double, v3: Double): Double
-{
-    val s: Double = (t1 * v1 + t2 * v2 + t3 * v3)    //весь путь
-    var tHalf: Double = 0.0
+    t3: Double, v3: Double
+): Double {
+    val s: Double = t1 * v1 + t2 * v2 + t3 * v3    //весь путь
+    var tHalf = 0.0
     val sHalf: Double = s / 2.0
 
-    if (sHalf <= t1 * v1) {tHalf = (sHalf / v1)}     //если на первой части
-    else {
-        if (sHalf > v1 * t1 && sHalf < (t1 * v1 + t2 * v2)) {tHalf = ((sHalf - t1 * v1) / v2 + t1)}  //если на втором промежутке
-        else {tHalf = (t1 + t2 + (sHalf - t1 * v1 - t2 * v2) / v3)}     //если на третьем промежутке
+    if (sHalf <= t1 * v1) {
+        tHalf = sHalf / v1  //если на первой части
+    } else {
+        if (sHalf > v1 * t1 && sHalf < t1 * v1 + t2 * v2) {
+            tHalf = (sHalf - t1 * v1) / v2 + t1                  //если на втором промежутке
+        } else {
+            tHalf = t1 + t2 + (sHalf - t1 * v1 - t2 * v2) / v3
+        }     //если на третьем промежутке
     }
-return tHalf
+    return tHalf
 }
+
 /**
  * Простая
  *
@@ -107,15 +113,15 @@ return tHalf
 fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
-    rookX2: Int, rookY2: Int): Int
-{
-    var danger: Int = 0
-    if ((kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2)) {danger = 3}
-    if ((kingX !== rookX1 && kingY !== rookY1) && (kingX == rookX2 || kingY == rookY2)) {danger = 2}
-    if ((kingX == rookX1 || kingY == rookY1) && (kingX !== rookX2 && kingY !== rookY2)) {danger = 1}
-return danger
+    rookX2: Int, rookY2: Int
+): Int {
+    return when {
+        (kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2) -> 3
+        kingX !== rookX1 && kingY !== rookY1 && (kingX == rookX2 || kingY == rookY2) -> 2
+        (kingX == rookX1 || kingY == rookY1) && kingX !== rookX2 && kingY !== rookY2 -> 1
+        else -> 0
+    }
 }
-
 
 
 /**
@@ -131,17 +137,18 @@ return danger
 fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
-    bishopX: Int, bishopY: Int): Int
-{
-    var danger: Int = 0
-    val differenceX: Int = abs (bishopX - kingX)
-    val differenceY: Int = abs (bishopY - kingY)
-    if ((kingX == rookX || kingY == rookY) && (differenceX == differenceY)) {danger = 3}
-    if ((kingX !== rookX && kingY !== rookY) && (differenceX == differenceY)) {danger = 2}
-    if ((kingX == rookX || kingY == rookY) && (differenceX !== differenceY)) {danger = 1}
-return danger
-}
+    bishopX: Int, bishopY: Int
+): Int {
+    val differenceX: Int = abs(bishopX - kingX)
+    val differenceY: Int = abs(bishopY - kingY)
 
+    return when {
+        (kingX == rookX || kingY == rookY) && differenceX == differenceY -> 3
+        kingX !== rookX && kingY !== rookY && differenceX == differenceY -> 2
+        (kingX == rookX || kingY == rookY) && differenceX !== differenceY -> 1
+        else -> 0
+    }
+}
 
 /**
  * Простая
@@ -151,26 +158,26 @@ return danger
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int
-{
-    var longSide: Double = 0.0
-    var sideNumber2: Double = 0.0
-    var sideNumber3: Double = 0.0
-    var cosOfAngle: Double = 0.0
-    var typeOfTriangle: Int = 0
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    var longSide = 0.0
+    var sideNumber2 = 0.0
+    var sideNumber3 = 0.0
+    var cosOfAngle = 0.0
 
-    if (a >= b && a >= c) {longSide = a; sideNumber2 = b; sideNumber3 = c}          //*************************************
-    if (b >= a && b >= c) {longSide = b; sideNumber2 = a; sideNumber3 = c}          // определение самой длинной стороны **
-    if (c >= b && c >= a) {longSide = c; sideNumber2 = a; sideNumber3 = b}          //*************************************
+    longSide = maxOf(a, b, c)
+    sideNumber3 = minOf(a, b, c)
+    sideNumber2 = a + b + c - maxOf(a, b, c) - minOf(a, b, c)
 
-    if (a + b > c && a + c > b && b + c > a) {
-        cosOfAngle = (sideNumber2*sideNumber2 + sideNumber3*sideNumber3 - longSide * longSide)/(2*sideNumber2*sideNumber3) //определение косинуса самого большого угла
-        if (cosOfAngle == 0.0) {typeOfTriangle = 1} //прямоугольный
-        if (cosOfAngle > 0.0) {typeOfTriangle = 0} //остроугольный
-        if (cosOfAngle < 0.0) {typeOfTriangle = 2} //тупоугольный
-    }
-    else {typeOfTriangle = -1} //если не выполняется условие существования
-return typeOfTriangle
+    return if (a + b > c && a + c > b && b + c > a) {
+        cosOfAngle =
+            (sideNumber2.pow(2) + sideNumber3.pow(2) - longSide.pow(2)) / (2 * sideNumber2 * sideNumber3) //определение косинуса самого большого угла
+        when {
+            cosOfAngle == 0.0 -> 1 //прямоугольный
+            cosOfAngle > 0.0 -> 0 //остроугольный
+            cosOfAngle < 0.0 -> 2 //тупоугольный
+            else -> -1
+        }
+    } else -1
 }
 
 /**
@@ -181,13 +188,18 @@ return typeOfTriangle
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int
-{
-    var intersection: Int = 0                   //рассмотрел 5 вариантов, как могут располагаться отрезки относительно друг друга
-    if (c > b || a > d) {intersection = -1}
-    if (d >= b && a >= c) {intersection = b - a}
-    if (b >= d && c >= a) {intersection = d - c}
-    if (d > b && b > c && c > a) {intersection = b - c}
-    if (b > d && d > a && a > c) {intersection = d - a}
-return intersection
+fun segmentLength(
+    a: Int,
+    b: Int,
+    c: Int,
+    d: Int
+): Int {     //рассмотрел 5 вариантов, как могут располагаться отрезки относительно друг друга
+    return when {
+        c > b || a > d -> -1
+        d >= b && a >= c -> b - a
+        b >= d && c >= a -> d - c
+        d > b && b > c && c > a -> b - c
+        b > d && d > a && a > c -> d - a
+        else -> 0
+    }
 }

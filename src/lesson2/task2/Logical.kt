@@ -3,6 +3,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -31,7 +32,7 @@ fun isNumberHappy(number: Int): Boolean =
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
-    (x1 == x2) || (y1 == y2) || (kotlin.math.abs(x1 - x2) == kotlin.math.abs(y2 - y1))
+    x1 == x2 || y1 == y2 || abs(x1 - x2) == abs(y2 - y1)
 
 
 /**
@@ -40,28 +41,29 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int
-{
-    val isLeapYear: Boolean
-    var days: Int = 0
-
-    if (year % 4 !== 0) {isLeapYear = false}                //если год не делится на 4, то он не високосный
+fun daysInMonth(month: Int, year: Int): Int {
+    var isLeapYear = false
+    if (year % 4 !== 0) {
+        isLeapYear = false
+    }                //если год не делится на 4, то он не високосный
     else {                                                  //иначе
-            if (year % 100 !== 0) {isLeapYear = true}       //если год не делится на 100, то он високосный
-            else {                                          //иначе
-                   if (year % 400 == 0) {isLeapYear = true} //если год делится на 400, то он високосный
-                   else {isLeapYear = false}                //иначе - не високосный
-                 }
-         }
-
-    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {days = 31}   //в январе, марте, мае, июле, августе, октябре, декабре 31 день
-    if (month == 4 || month == 6 || month == 9 || month == 11) {days = 30}                                              //в апреле, июне, сентябре и ноябре 30 дней
-    if (month == 2 && isLeapYear == true) {days = 29}                                                                   //в високосный год в феврале 29 дней
-    if (month == 2 && isLeapYear == false) {days = 28}                                                                  //не високосный год, февраль - 28 дней
-
-return days
+        if (year % 100 !== 0) {
+            isLeapYear = true
+        }       //если год не делится на 100, то он високосный
+        else {                                          //иначе
+            if (year % 400 == 0) {   //если год делится на 400, то он високосный
+                isLeapYear = true
+            }
+        }
+    }
+    return when {
+        month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12 -> 31    //в январе, марте, мае, июле, августе, октябре, декабре 31 день
+        month == 4 || month == 6 || month == 9 || month == 11 -> 30                                               //в апреле, июне, сентябре и ноябре 30 дней
+        month == 2 && isLeapYear == true -> 29                                                                    //в високосный год в феврале 29 дней
+        month == 2 && isLeapYear == false -> 28                                                                   //не високосный год, февраль - 28 дней
+        else -> 0
+    }
 }
-
 
 /**
  * Средняя
@@ -72,8 +74,8 @@ return days
  */
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
-    x2: Double, y2: Double, r2: Double): Boolean = sqrt((x2 - x1).pow(2) + (y2 - y1).pow(2)) <= (r2 - r1)
-    //.pow(2.0)
+    x2: Double, y2: Double, r2: Double
+): Boolean = sqrt((x2 - x1).pow(2) + (y2 - y1).pow(2)) <= (r2 - r1)
 
 
 /**
@@ -88,15 +90,10 @@ fun circleInside(
 
 
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    var shorterSide: Int = 0
-    var sideNumber2: Int = 0
-    val brickPass: Boolean
-    if (c >= a && c >= b) {shorterSide = a; sideNumber2 = b}
-    if (b >= a && b >= c) {shorterSide = a; sideNumber2 = c}
-    if (a >= b && a >= c) {shorterSide = c; sideNumber2 = b} //определение 2х самых коротких сторон
-
-    if (shorterSide <= r && sideNumber2 <= s || shorterSide <= s && sideNumber2 <= r) {brickPass = true}      //если короткие стороны меньше s и r, то кирпич прохходит
-    else {brickPass = false}
-
-return brickPass
+    var shorterSide = minOf(a, b, c)       //определение 2х самых коротких сторон
+    var sideNumber2 = a + b + c - minOf(a, b, c) - maxOf(a, b, c)
+    return when {
+        shorterSide <= r && sideNumber2 <= s || shorterSide <= s && sideNumber2 <= r -> true //если короткие стороны меньше s и r, то кирпич проходит
+        else -> false
+    }
 }
