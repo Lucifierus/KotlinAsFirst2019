@@ -123,7 +123,6 @@ fun whichRookThreatens(
     }
 }
 
-
 /**
  * Простая
  *
