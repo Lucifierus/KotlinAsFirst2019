@@ -2,9 +2,11 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
+import kotlin.math.pow
 
 /**
  * Пример
@@ -172,7 +174,22 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    var k = 1
+    var answer = false
+    for (i in m..n) {
+        if (sqr(k) in m..n) {
+            answer = true
+        } else {
+            if (k * k > n) {
+                answer = false
+            } else {
+                k++
+            }
+        }
+    }
+    return answer
+}
 
 /**
  * Средняя
@@ -259,7 +276,22 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {   ///////!!!!!!!НАЙТИ ОШИБКУ В АЛГОРИТМЕ!!!!!!!! не работает с 777 7777 77
+    //определить количество цифирь в числе
+    val count = digitNumber(n)
+    var answer = false
+
+    //сравниваю первую цифру со 2 3 4 ... count , вторую с 3 4 ... count и тд
+    var digit = n / 10.0.pow(count - 1)
+
+    for (i in 1..count) {
+        for (z in i..count) {
+            if (digit !== (n / 10.0.pow(count - z - 1)) % 10) answer = true else return false
+        }
+        digit = n / 10.0.pow(count - i) % 10
+    }
+    return answer
+}
 
 /**
  * Сложная
