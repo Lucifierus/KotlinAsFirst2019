@@ -165,7 +165,16 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var answer = true
+    for (i in 2..minOf(m, n)) {
+        if (m % i == 0 && n % i == 0) {
+            answer = false
+            break
+        }
+    }
+    return answer
+}
 
 /**
  * Простая
@@ -177,6 +186,11 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var k = 1
     var answer = false
+
+    if (m < 1 || n < 1) {
+        return false
+    }
+
     for (i in m..n) {
         if (sqr(k) in m..n) {
             answer = true
@@ -255,7 +269,15 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var newNumber = 0
+    var number = n
+    while (number > 0) {
+        newNumber = newNumber * 10 + number % 10
+        number /= 10
+    }
+    return newNumber
+}
 
 /**
  * Средняя
@@ -266,7 +288,10 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    val number = revert(n)
+    return number == n
+}
 
 /**
  * Средняя
@@ -279,20 +304,28 @@ fun isPalindrome(n: Int): Boolean = TODO()
 fun hasDifferentDigits(n: Int): Boolean {   ///////!!!!!!!НАЙТИ ОШИБКУ В АЛГОРИТМЕ!!!!!!!! не работает с 777 7777 77
     //определить количество цифирь в числе
     val count = digitNumber(n)
-    var answer = false
+    var digit = n / (10.0.pow(count - 1)) //первая цифра
+    for (i in 1..count) {
+        if (digit !== n / (10.0.pow(count - i) % 10)) {
+            return true
+        }
+    }
+    return false
+}
 
+/*
     //сравниваю первую цифру со 2 3 4 ... count , вторую с 3 4 ... count и тд
     var digit = n / 10.0.pow(count - 1)
 
-    for (i in 1..count) {
+    for (i in 2..count) {
         for (z in i..count) {
-            if (digit !== (n / 10.0.pow(count - z - 1)) % 10) answer = true else return false
+            if (digit !== (n / 10.0.pow(count - z - 1)) % 10) {answer = true} else {return false}
         }
         digit = n / 10.0.pow(count - i) % 10
     }
     return answer
 }
-
+*/
 /**
  * Сложная
  *
