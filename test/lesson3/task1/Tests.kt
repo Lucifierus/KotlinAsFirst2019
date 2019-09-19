@@ -67,7 +67,7 @@ class Tests {
     fun digitNumber() {
         assertEquals(1, digitNumber(0))
         assertEquals(1, digitNumber(7))
-        assertEquals(2, digitNumber(10))
+        assertEquals(4, digitNumber(1000))
         assertEquals(2, digitNumber(99))
         assertEquals(3, digitNumber(123))
         assertEquals(10, digitNumber(Int.MAX_VALUE))

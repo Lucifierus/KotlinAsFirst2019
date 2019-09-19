@@ -3,10 +3,7 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.sqrt
-import kotlin.math.pow
+import kotlin.math.*
 
 /**
  * Пример
@@ -312,35 +309,6 @@ fun hasDifferentDigits(n: Int): Boolean {
     return false
 }
 
-
-
-
-    /*
-    var answer = false
-    val count = digitNumber(n)
-    val digit = n / (10.0.pow(count - 1)) //первая цифра
-    for (i in 1 until count) {
-        if (digit == n / (10.0.pow(count - i - 1) % 10)) answer = false else return true
-    }
-    return answer
-}
-
-
-    //сравниваю первую цифру со 2 3 4 ... count , вторую с 3 4 ... count и тд
-    var digit = n / 10.0.pow(count - 1)
-
-    for (i in 2..count) {
-        for (z in i..count) {
-            if (digit !== (n / 10.0.pow(count - z - 1)) % 10) {answer = true} else {return false}
-        }
-        digit = n / 10.0.pow(count - i) % 10
-    }
-    return answer
-}
-*/
-
-
-
 /**
  * Сложная
  *
@@ -350,7 +318,22 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {     //Не работает при n = 10 и выше, а если n < 10 то алгоритм верный
+    var number = 0 //сама последовательность
+    var answer = 0 //это вывести в ответ
+    var k = 0      //i*i
+    var amountNumbers = 0 //количество цифр в последовательности
+    for (i in 1..9 step 1) {
+        k = i * i
+        number = ((number * 10.0.pow(digitNumber(k))) + k).toInt()
+        amountNumbers += digitNumber(k)
+        if (amountNumbers >= n) break
+
+    }
+    if (n == 1) { answer = number}
+    if (n > 1) { answer = number % 10}
+    return answer
+}
 
 /**
  * Сложная
