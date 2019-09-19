@@ -72,7 +72,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var count: Int = 0   //обнуляю счетчик
+    var count = 0   //обнуляю счетчик
     var number: Int = n
     if (number >= 10 || number <= 10) {   //если исходное число больше 10, то выполняется цикл, иначе - в числе 1 цифра
         do {
@@ -187,8 +187,8 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     var k = 1
     var answer = false
 
-    if (m < 1 || n < 1) {
-        return false
+    if (m < 1 && n >= 0) {
+        return true
     }
 
     for (i in m..n) {
@@ -301,19 +301,31 @@ fun isPalindrome(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean {   ///////!!!!!!!НАЙТИ ОШИБКУ В АЛГОРИТМЕ!!!!!!!! не работает с 777 7777 77
-    //определить количество цифирь в числе
-    val count = digitNumber(n)
-    var digit = n / (10.0.pow(count - 1)) //первая цифра
-    for (i in 1..count) {
-        if (digit !== n / (10.0.pow(count - i) % 10)) {
-            return true
-        }
+fun hasDifferentDigits(n: Int): Boolean {
+    var number = n / 10
+    var digit = n % 10
+    while (number > 0) {
+        if (number % 10 != digit) return true
+        digit = number % 10
+        number /= 10
     }
     return false
 }
 
-/*
+
+
+
+    /*
+    var answer = false
+    val count = digitNumber(n)
+    val digit = n / (10.0.pow(count - 1)) //первая цифра
+    for (i in 1 until count) {
+        if (digit == n / (10.0.pow(count - i - 1) % 10)) answer = false else return true
+    }
+    return answer
+}
+
+
     //сравниваю первую цифру со 2 3 4 ... count , вторую с 3 4 ... count и тд
     var digit = n / 10.0.pow(count - 1)
 
@@ -326,6 +338,9 @@ fun hasDifferentDigits(n: Int): Boolean {   ///////!!!!!!!НАЙТИ ОШИБК�
     return answer
 }
 */
+
+
+
 /**
  * Сложная
  *

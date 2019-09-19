@@ -153,6 +153,7 @@ class Tests {
         assertFalse(squareBetweenExists(999, 1001))
         assertTrue(squareBetweenExists(152374337, 152423715))
         assertFalse(squareBetweenExists(2147395601, Int.MAX_VALUE))
+        assertTrue(squareBetweenExists(0, 0))
     }
 
     @Test
