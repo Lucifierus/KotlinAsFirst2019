@@ -328,7 +328,6 @@ fun squareSequenceDigit(n: Int): Int {     //Не работает при n = 10
         number = ((number * 10.0.pow(digitNumber(k))) + k).toInt()
         amountNumbers += digitNumber(k)
         if (amountNumbers >= n) break
-
     }
     if (n == 1) { answer = number}
     if (n > 1) { answer = number % 10}
