@@ -323,7 +323,7 @@ fun squareSequenceDigit(n: Int): Int {     //Не работает при n = 10
     var answer = 0 //это вывести в ответ
     var k = 0      //i*i
     var amountNumbers = 0 //количество цифр в последовательности
-    for (i in 1..9 step 1) {
+    for (i in 1..n step 1) {
         k = i * i
         number = ((number * 10.0.pow(digitNumber(k))) + k).toInt()
         amountNumbers += digitNumber(k)
