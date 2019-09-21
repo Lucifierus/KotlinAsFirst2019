@@ -174,9 +174,11 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Значение пустого многочлена равно 0 при любом x.
  */
 fun polynom(p: List<Int>, x: Int): Int {
-
-    var poly = 0.0
-    for (i in 0 until p.size) {
+    if (p.isEmpty()) {
+        return 0
+    }
+    var poly = p[0].toDouble()
+    for (i in 1 until p.size) {
         poly += p[i] * x.toDouble().pow(i)
     }
     return poly.toInt()
