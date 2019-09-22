@@ -194,6 +194,7 @@ class Tests {
         assertEquals(1.0, cos(100 * PI, 1e-5), 1e-5)
         assertNotEquals(kotlin.math.cos(1.0), cos(1.0, 1.0))
         assertNotEquals(kotlin.math.cos(0.5), cos(-0.5, 1.0))
+        assertEquals(0.9998476951604843, cos(-18.832102629018816, 1e-10))
     }
 
     @Test

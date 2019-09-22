@@ -253,7 +253,7 @@ fun sin(x: Double, eps: Double): Double {
     var i = 3
     if (x / PI % 2.0 == 0.0) return 0.0
     while (abs(newConsistent) >= eps) {
-        newConsistent = (x.pow(i) / factorial(i)) * alternation
+        newConsistent = x.pow(i) / factorial(i) * alternation
         sinOfx += newConsistent
         alternation *= -1
         i += 2
@@ -278,7 +278,7 @@ fun cos(x: Double, eps: Double): Double {
     if (x / PI % 2.0 == 0.0) return 1.0
     if (2 * x / PI % 2.0 == 0.0) return -1.0
     while (abs(newConsistent) >= eps) {
-        newConsistent = (x.pow(i) / factorial(i)) * alternation
+        newConsistent = x.pow(i) / factorial(i) * alternation
         cosOfx += newConsistent
         alternation *= -1
         i += 2
@@ -357,8 +357,12 @@ fun squareSequenceDigit(n: Int): Int {     //Не работает при n = 10
         amountNumbers += digitNumber(k)
         if (amountNumbers >= n) break
     }
-    if (n == 1) { answer = number}
-    if (n > 1) { answer = number % 10}
+    if (n == 1) {
+        answer = number
+    }
+    if (n > 1) {
+        answer = number % 10
+    }
     return answer
 }
 
