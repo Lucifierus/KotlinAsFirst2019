@@ -177,11 +177,13 @@ fun polynom(p: List<Int>, x: Int): Int {
     if (p.isEmpty()) {
         return 0
     }
-    var poly = p[0].toDouble()
-    for (i in 1 until p.size) {
-        poly += p[i] * x.toDouble().pow(i)
+    var poly = 0
+    var factorX = 1
+    for (i in 0 until p.size) {
+        poly += p[i] * factorX
+        factorX *= x
     }
-    return poly.toInt()
+    return poly
 }
 
 /**
