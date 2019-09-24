@@ -67,9 +67,9 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String =
-    if ((age == 1 || age % 10 == 1) && age != 11 && age != 111) "$age год"   //если возраст = 1 или оканчивается на 1, кроме 11 и 111, то ГОД
+    if (age % 10 == 1 && age != 11 && age != 111) "$age год"   //если возраст = 1 или оканчивается на 1, кроме 11 и 111, то ГОД
     else {
-        if ((age in 2..4 || age % 10 in 2..4) && age !in 5..20 && age !in 105..120) "$age года"      //если возраст в диапазоне от 2 до 4 или оканчивется на 2,3,4  и не находится между 5...20 и не находится между 105...120 ГОДА
+        if (age % 10 in 2..4 && age !in 5..20) "$age года"      //если возраст в диапазоне от 2 до 4 или оканчивется на 2,3,4  и не находится между 5...20 и не находится между 105...120 ГОДА
         else "$age лет"
     }
 
@@ -85,17 +85,17 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
-    val s: Double = t1 * v1 + t2 * v2 + t3 * v3    //весь путь
-    var tHalf = 0.0
-    val sHalf: Double = s / 2.0
+    val s = t1 * v1 + t2 * v2 + t3 * v3    //весь путь
+    val tHalf: Double
+    val sHalf = s / 2
 
-    if (sHalf <= t1 * v1) {
-        tHalf = sHalf / v1  //если на первой части
+    tHalf = if (sHalf <= t1 * v1) {
+        sHalf / v1  //если на первой части
     } else {
         if (sHalf > v1 * t1 && sHalf < t1 * v1 + t2 * v2) {
-            tHalf = (sHalf - t1 * v1) / v2 + t1                  //если на втором промежутке
+            (sHalf - t1 * v1) / v2 + t1                  //если на втором промежутке
         } else {
-            tHalf = t1 + t2 + (sHalf - t1 * v1 - t2 * v2) / v3
+            t1 + t2 + (sHalf - t1 * v1 - t2 * v2) / v3
         }     //если на третьем промежутке
     }
     return tHalf
@@ -171,10 +171,9 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
         cosOfAngle =
             (sideNumber2.pow(2) + sideNumber3.pow(2) - longSide.pow(2)) / (2 * sideNumber2 * sideNumber3) //определение косинуса самого большого угла
         when {
-            cosOfAngle == 0.0 -> 1 //прямоугольный
             cosOfAngle > 0.0 -> 0 //остроугольный
             cosOfAngle < 0.0 -> 2 //тупоугольный
-            else -> -1
+            else -> 1 //прямоугольный
         }
     } else -1
 }

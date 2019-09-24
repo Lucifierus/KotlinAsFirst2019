@@ -70,15 +70,11 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var count = 0   //обнуляю счетчик
-    var number: Int = n
-    if (number >= 10 || number <= 10) {   //если исходное число больше 10, то выполняется цикл, иначе - в числе 1 цифра
-        do {
-            number /= 10
-            count++
-        } while (number !== 0)
-    } else {
-        count = 1
-    }
+    var number = n
+    do {
+        number /= 10
+        count++
+    } while (number !== 0)
     return count
 }
 

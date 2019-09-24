@@ -56,12 +56,11 @@ fun daysInMonth(month: Int, year: Int): Int {
             }
         }
     }
-    return when {
-        month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12 -> 31    //в январе, марте, мае, июле, августе, октябре, декабре 31 день
-        month == 4 || month == 6 || month == 9 || month == 11 -> 30                                               //в апреле, июне, сентябре и ноябре 30 дней
-        month == 2 && isLeapYear == true -> 29                                                                    //в високосный год в феврале 29 дней
-        month == 2 && isLeapYear == false -> 28                                                                   //не високосный год, февраль - 28 дней
-        else -> 0
+    if (isLeapYear && month == 2) return 29 //в високосный год в феврале 29 дней
+    if (!isLeapYear && month == 2) return 28 //не високосный год, февраль - 28 дней
+    return when (month) {
+        1, 3, 5, 7, 8, 10, 12 -> 31    //в январе, марте, мае, июле, августе, октябре, декабре 31 день
+        else -> 30                                               //в апреле, июне, сентябре и ноябре 30 дней
     }
 }
 
@@ -90,10 +89,7 @@ fun circleInside(
 
 
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    var shorterSide = minOf(a, b, c)       //определение 2х самых коротких сторон
-    var sideNumber2 = a + b + c - minOf(a, b, c) - maxOf(a, b, c)
-    return when {
-        shorterSide <= r && sideNumber2 <= s || shorterSide <= s && sideNumber2 <= r -> true //если короткие стороны меньше s и r, то кирпич проходит
-        else -> false
-    }
+    val shorterSide = minOf(a, b, c)       //определение 2х самых коротких сторон
+    val sideNumber2 = a + b + c - minOf(a, b, c) - maxOf(a, b, c)
+    return shorterSide <= r && sideNumber2 <= s || shorterSide <= s && sideNumber2 <= r
 }
