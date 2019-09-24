@@ -142,6 +142,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int = n / minDivisor(n)
+
 /**
  * Простая
  *
@@ -236,9 +237,11 @@ fun collatzSteps(x: Int): Int {
 fun sin(x: Double, eps: Double): Double {
     var sinOfx = x
     var alternation = -1
-    var newConsistent = 1.0
     var i = 3
+    var newConsistent = 1.0
+
     if (x / PI % 2.0 == 0.0) return 0.0
+
     while (abs(newConsistent) >= eps) {
         newConsistent = x.pow(i) / factorial(i) * alternation
         sinOfx += newConsistent
@@ -247,6 +250,7 @@ fun sin(x: Double, eps: Double): Double {
     }
     return sinOfx
 }
+
 
 /**
  * Средняя
@@ -262,8 +266,10 @@ fun cos(x: Double, eps: Double): Double {
     var alternation = -1
     var newConsistent = 1.0
     var i = 2
+
     if (x / PI % 2.0 == 0.0) return 1.0
     if (2 * x / PI % 2.0 == 0.0) return -1.0
+
     while (abs(newConsistent) >= eps) {
         newConsistent = x.pow(i) / factorial(i) * alternation
         cosOfx += newConsistent
@@ -300,10 +306,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    val number = revert(n)
-    return number == n
-}
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 /**
  * Средняя
@@ -344,11 +347,10 @@ fun squareSequenceDigit(n: Int): Int {     //Не работает при n = 10
         amountNumbers += digitNumber(k)
         if (amountNumbers >= n) break
     }
-    if (n == 1) {
-        answer = number
-    }
-    if (n > 1) {
-        answer = number % 10
+    answer = if (n == 1) {
+        number
+    } else {
+        number % 10
     }
     return answer
 }
