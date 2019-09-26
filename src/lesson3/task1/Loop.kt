@@ -235,15 +235,14 @@ fun collatzSteps(x: Int): Int {
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
 fun sin(x: Double, eps: Double): Double {
-    var sinOfx = x
-    var alternation = -1
-    var i = 3
+    val firstNumber = x % (2 * PI)
+    var alternation = -1 //умножение на -1, через каждый член поледовательности
+    var sinOfx = firstNumber //answer
     var newConsistent = 1.0
-
-    if (x / PI % 2.0 == 0.0) return 0.0
+    var i = 3
 
     while (abs(newConsistent) >= eps) {
-        newConsistent = x.pow(i) / factorial(i) * alternation
+        newConsistent = firstNumber.pow(i) / factorial(i) * alternation
         sinOfx += newConsistent
         alternation *= -1
         i += 2
@@ -262,20 +261,17 @@ fun sin(x: Double, eps: Double): Double {
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
 fun cos(x: Double, eps: Double): Double {
-
-    var firstNumber = x % (2 * PI)
+    val firstNumber = x % (2 * PI)
     var alternation = -1 //умножение на -1, через каждый член поледовательности
     var cosOfx = 1.0 //answer
     var newConsistent = 1.0
     var i = 2
 
     while (abs(newConsistent) >= eps) {
-
         newConsistent = firstNumber.pow(i) / factorial(i) * alternation
         cosOfx += newConsistent
         alternation *= -1
         i += 2
-
     }
     return cosOfx
 }
