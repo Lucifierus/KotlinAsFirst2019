@@ -338,6 +338,7 @@ fun squareSequenceDigit(n: Int): Int {     //Не работает при n = 10
         if (amountNumbers >= n) break
     }
 
+
     answer = if (n == 1) {
         apart
     } else {
