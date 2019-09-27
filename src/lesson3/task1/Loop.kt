@@ -324,19 +324,25 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {
+fun ultimateSquareFibSequenceDigit(n: Int, inputData: Int): Int {
+//inputData = 1 для squareSequenceDigit
+//inputData = 2 для fibSequenceDigit
+
     var answer = 1 //это вывести в ответ
     var amountDigits = 0 //количество цифр, которые были найдены (от одного до n)
     var numbers = 0 //переменная, которая будет очищаться и наполняться
     var i = 1
 
     while (amountDigits < n) {
-        numbers = i * i
+        numbers = if (inputData == 1) { //определяю, для какой программы нужен ответ (fib или square)
+            i * i
+        } else fib(i)
+
         amountDigits += digitNumber(numbers)
         i++
     }
 
-    if (digitNumber(numbers) == 1) return numbers
+    if (digitNumber(numbers) == 1) return numbers   //алгоритм нахождения конкретной цифры из члена последовательности
     if (amountDigits == n) return numbers % 10
     while (n !== amountDigits) {
         answer = numbers / 10.toDouble().pow(amountDigits - n).toInt()
@@ -348,6 +354,8 @@ fun squareSequenceDigit(n: Int): Int {
 
     return answer
 }
+
+fun squareSequenceDigit(n: Int): Int = ultimateSquareFibSequenceDigit(n, 1)
 
 /**
  * Сложная
@@ -358,27 +366,4 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int {
-    var answer = 1 //это вывести в ответ
-    var amountDigits = 0 //количество цифр, которые были найдены (от одного до n)
-    var numbers = 0 //переменная, которая будет очищаться и наполняться
-    var i = 1
-
-    while (amountDigits < n) {
-        numbers = fib(i)
-        amountDigits += digitNumber(numbers)
-        i++
-    }
-
-    if (digitNumber(numbers) == 1) return numbers
-    if (amountDigits == n) return numbers % 10
-    while (n !== amountDigits) {
-        answer = numbers / 10.toDouble().pow(amountDigits - n).toInt()
-        amountDigits -= (amountDigits - n)
-    }
-    if (digitNumber(answer) > 1) {
-        answer %= 10
-    }
-
-    return answer
-}
+fun fibSequenceDigit(n: Int): Int = ultimateSquareFibSequenceDigit(n, 2)
