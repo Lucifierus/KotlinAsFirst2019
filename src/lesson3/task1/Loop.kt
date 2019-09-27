@@ -324,26 +324,25 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int {     //Не работает при n = 10 и выше, а если n < 10 то алгоритм верный
-    var number = 0 //сама последовательность
-    var answer: Int //это вывести в ответ
-    var apart = 1
-    var k: Int      //i*i
-    var amountNumbers = 0 //количество цифр в последовательности
-    for (i in 1..n step 1) {
-        k = i * i
-        number = ((number * 10.0.pow(digitNumber(k))) + k).toInt()
-        apart = number % (10.toDouble().pow(digitNumber(k)) - 1).toInt()
-        amountNumbers += digitNumber(k)
-        if (amountNumbers >= n) break
+fun squareSequenceDigit(n: Int): Int {
+    var answer = 1 //это вывести в ответ
+    var amountDigits = 0 //количество цифр, которые были найдены (от одного до n)
+    var numberzzz = 0 //переменная, которая будет очищаться и наполняться
+    var i = 1
+
+    while (amountDigits < n) {
+        numberzzz = i * i
+        amountDigits += digitNumber(numberzzz)
+        i++
     }
 
-
-    answer = if (n == 1) {
-        apart
-    } else {
-        apart % 10
+    if (digitNumber(numberzzz) == 1) return numberzzz
+    if (amountDigits == n) return numberzzz % 10
+    while (n !== amountDigits) {
+        answer = numberzzz / 10.toDouble().pow(amountDigits - n).toInt()
+        amountDigits--
     }
+    answer %= 10
     return answer
 }
 
