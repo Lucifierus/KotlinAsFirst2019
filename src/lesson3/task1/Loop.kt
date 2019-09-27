@@ -340,9 +340,10 @@ fun squareSequenceDigit(n: Int): Int {
     if (amountDigits == n) return numberzzz % 10
     while (n !== amountDigits) {
         answer = numberzzz / 10.toDouble().pow(amountDigits - n).toInt()
-        amountDigits--
+        amountDigits -= (amountDigits - n)
     }
-    answer %= 10
+    if (digitNumber(answer) > 1) { answer %= 10 }
+
     return answer
 }
 
