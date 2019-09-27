@@ -327,22 +327,24 @@ fun hasDifferentDigits(n: Int): Boolean {
 fun squareSequenceDigit(n: Int): Int {
     var answer = 1 //это вывести в ответ
     var amountDigits = 0 //количество цифр, которые были найдены (от одного до n)
-    var numberzzz = 0 //переменная, которая будет очищаться и наполняться
+    var numbers = 0 //переменная, которая будет очищаться и наполняться
     var i = 1
 
     while (amountDigits < n) {
-        numberzzz = i * i
-        amountDigits += digitNumber(numberzzz)
+        numbers = i * i
+        amountDigits += digitNumber(numbers)
         i++
     }
 
-    if (digitNumber(numberzzz) == 1) return numberzzz
-    if (amountDigits == n) return numberzzz % 10
+    if (digitNumber(numbers) == 1) return numbers
+    if (amountDigits == n) return numbers % 10
     while (n !== amountDigits) {
-        answer = numberzzz / 10.toDouble().pow(amountDigits - n).toInt()
+        answer = numbers / 10.toDouble().pow(amountDigits - n).toInt()
         amountDigits -= (amountDigits - n)
     }
-    if (digitNumber(answer) > 1) { answer %= 10 }
+    if (digitNumber(answer) > 1) {
+        answer %= 10
+    }
 
     return answer
 }
@@ -356,4 +358,27 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var answer = 1 //это вывести в ответ
+    var amountDigits = 0 //количество цифр, которые были найдены (от одного до n)
+    var numbers = 0 //переменная, которая будет очищаться и наполняться
+    var i = 1
+
+    while (amountDigits < n) {
+        numbers = fib(i)
+        amountDigits += digitNumber(numbers)
+        i++
+    }
+
+    if (digitNumber(numbers) == 1) return numbers
+    if (amountDigits == n) return numbers % 10
+    while (n !== amountDigits) {
+        answer = numbers / 10.toDouble().pow(amountDigits - n).toInt()
+        amountDigits -= (amountDigits - n)
+    }
+    if (digitNumber(answer) > 1) {
+        answer %= 10
+    }
+
+    return answer
+}
