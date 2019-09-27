@@ -234,21 +234,25 @@ fun collatzSteps(x: Int): Int {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double {
-    val firstNumber = x % (2 * PI)
-    var alternation = -1 //умножение на -1, через каждый член поледовательности
-    var sinOfx = firstNumber //answer
-    var newConsistent = 1.0
-    var i = 3
+
+fun ultimateSinCos(eps: Double, i: Int, x: Double, firstMember: Double): Double {
+    val firstNumber = x % (2 * PI)                                                      //ОДИНАКОВОЕ
+    var alternation = -1 //умножение на -1, через каждый член поледовательности         //ОДИНАКОВОЕ
+    var newConsistent = 1.0                                                             //ОДИНАКОВОЕ
+    var answer = firstMember
+    var i = i
 
     while (abs(newConsistent) >= eps) {
         newConsistent = firstNumber.pow(i) / factorial(i) * alternation
-        sinOfx += newConsistent
+        answer += newConsistent
         alternation *= -1
         i += 2
     }
-    return sinOfx
+    return answer
 }
+
+fun sin(x: Double, eps: Double): Double = ultimateSinCos(eps, 3, x, x % (2 * PI))
+//i = 3, firstMember - первичное значение переменной answer (первый член последовательности).
 
 
 /**
@@ -260,21 +264,9 @@ fun sin(x: Double, eps: Double): Double {
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double {
-    val firstNumber = x % (2 * PI)
-    var alternation = -1 //умножение на -1, через каждый член поледовательности
-    var cosOfx = 1.0 //answer
-    var newConsistent = 1.0
-    var i = 2
+fun cos(x: Double, eps: Double): Double = ultimateSinCos(eps, 2, x, 1.0)
+//i = 2, firstMember - первичное значение переменной answer (первый член последовательности).
 
-    while (abs(newConsistent) >= eps) {
-        newConsistent = firstNumber.pow(i) / factorial(i) * alternation
-        cosOfx += newConsistent
-        alternation *= -1
-        i += 2
-    }
-    return cosOfx
-}
 
 /**
  * Средняя
@@ -334,19 +326,22 @@ fun hasDifferentDigits(n: Int): Boolean {
  */
 fun squareSequenceDigit(n: Int): Int {     //Не работает при n = 10 и выше, а если n < 10 то алгоритм верный
     var number = 0 //сама последовательность
-    var answer = 0 //это вывести в ответ
-    var k = 0      //i*i
+    var answer: Int //это вывести в ответ
+    var apart = 1
+    var k: Int      //i*i
     var amountNumbers = 0 //количество цифр в последовательности
     for (i in 1..n step 1) {
         k = i * i
         number = ((number * 10.0.pow(digitNumber(k))) + k).toInt()
+        apart = number % (10.toDouble().pow(digitNumber(k)) - 1).toInt()
         amountNumbers += digitNumber(k)
         if (amountNumbers >= n) break
     }
+
     answer = if (n == 1) {
-        number
+        apart
     } else {
-        number % 10
+        apart % 10
     }
     return answer
 }
