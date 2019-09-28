@@ -224,18 +224,7 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String {
-    var string = String()
-    var number = n
-    while (number > 1) {
-        string += minDivisor(number)
-        number /= minDivisor(number)
-        if (number > 1) {
-            string += '*'
-        }
-    }
-    return string
-}
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -245,7 +234,7 @@ fun factorizeToString(n: Int): String {
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    var list = mutableListOf<Int>()
+    val list = mutableListOf<Int>()
     var number = n
     if (n == 0) {
         list.add(0, 0)
@@ -273,9 +262,6 @@ fun convertToString(n: Int, base: Int): String {
     val abc = "abcdefghijklmnopqrstuvwxyz"
     val list = convert(n, base).toMutableList()
     var convertation = ""
-    if (n == 0) {
-        return 0.toString()
-    }
     for (i in 0 until list.size) {
         if (list[i] > 9) {
             convertation += abc[list[i] - 10]
