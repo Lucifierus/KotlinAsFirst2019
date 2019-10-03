@@ -168,27 +168,11 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var k = 1
-    var answer = false
+fun squareBetweenExists(m: Int, n: Int): Boolean =
+    sqrt(m.toDouble()).toInt() != sqrt(n.toDouble()).toInt()
+            || sqr(sqrt(m.toDouble()).toInt()) == m
+            || sqr(sqrt(n.toDouble()).toInt()) == n
 
-    if (m < 1 && n >= 0) {
-        return true
-    }
-
-    for (i in m..n) {
-        if (sqr(k) in m..n) {
-            answer = true
-        } else {
-            if (k * k > n) {
-                answer = false
-            } else {
-                k++
-            }
-        }
-    }
-    return answer
-}
 
 /**
  * Средняя
@@ -206,6 +190,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
+
 fun collatzSteps(x: Int): Int {
     var count = 0
     var number = x
@@ -236,9 +221,9 @@ fun collatzSteps(x: Int): Int {
  */
 
 fun ultimateSinCos(eps: Double, i: Int, x: Double, firstMember: Double): Double {
-    val firstNumber = x % (2 * PI)                                                      //ОДИНАКОВОЕ
-    var alternation = -1 //умножение на -1, через каждый член поледовательности         //ОДИНАКОВОЕ
-    var newConsistent = 1.0                                                             //ОДИНАКОВОЕ
+    val firstNumber = x % (2 * PI)
+    var alternation = -1 //умножение на -1, через каждый член поледовательности
+    var newConsistent = 1.0
     var answer = firstMember
     var i = i
 
@@ -324,9 +309,7 @@ fun hasDifferentDigits(n: Int): Boolean {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun ultimateSquareFibSequenceDigit(n: Int, inputData: Int): Int {
-//inputData = 1 для squareSequenceDigit
-//inputData = 2 для fibSequenceDigit
+fun ultimateSquareFibSequenceDigit(n: Int, func: (Int) -> Int): Int {
 
     var answer = 1 //это вывести в ответ
     var amountDigits = 0 //количество цифр, которые были найдены (от одного до n)
@@ -334,28 +317,20 @@ fun ultimateSquareFibSequenceDigit(n: Int, inputData: Int): Int {
     var i = 1
 
     while (amountDigits < n) {
-        numbers = if (inputData == 1) { //определяю, для какой программы нужен ответ (fib или square)
-            i * i
-        } else fib(i)
-
+        numbers = func(i)
         amountDigits += digitNumber(numbers)
         i++
     }
 
-    if (digitNumber(numbers) == 1) return numbers   //алгоритм нахождения конкретной цифры из члена последовательности
+    //алгоритм нахождения конкретной цифры из члена последовательности
     if (amountDigits == n) return numbers % 10
-    while (n !== amountDigits) {
-        answer = numbers / 10.toDouble().pow(amountDigits - n).toInt()
-        amountDigits -= (amountDigits - n)
-    }
-    if (digitNumber(answer) > 1) {
-        answer %= 10
-    }
+    answer = numbers / 10.toDouble().pow(amountDigits - n).toInt()
+    if (digitNumber(answer) > 1) answer %= 10
 
     return answer
 }
 
-fun squareSequenceDigit(n: Int): Int = ultimateSquareFibSequenceDigit(n, 1)
+fun squareSequenceDigit(n: Int): Int = ultimateSquareFibSequenceDigit(n, ::sqr)
 
 /**
  * Сложная
@@ -366,4 +341,4 @@ fun squareSequenceDigit(n: Int): Int = ultimateSquareFibSequenceDigit(n, 1)
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = ultimateSquareFibSequenceDigit(n, 2)
+fun fibSequenceDigit(n: Int): Int = ultimateSquareFibSequenceDigit(n, ::fib)
