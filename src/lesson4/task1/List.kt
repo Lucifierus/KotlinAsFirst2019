@@ -8,6 +8,7 @@ import lesson3.task1.digitNumber
 import lesson3.task1.minDivisor
 import kotlin.math.sqrt
 import kotlin.math.pow
+import kotlin.system.exitProcess
 
 
 /**
@@ -262,7 +263,7 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
     val abc = "abcdefghijklmnopqrstuvwxyz"
     val list = convert(n, base).toMutableList()
-    var convertation = ""
+    var convertation = " "
     for (i in 0 until list.size) {
         if (list[i] > 9) {
             convertation += abc[list[i] - 10]
@@ -319,14 +320,121 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
-/*{
-    val digits = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
-    val decades = listOf("десять", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
-    val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-    val numbers11_19 = listOf("одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-    var answer = mutableListOf<String>()
+fun russian(n: Int): String {
+    val digits = listOf(
+        "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять"
+    )
+    val decades = listOf(
+        "десять", "двадцать", "тридцать", "сорок",
+        "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто"
+    )
+    val hundreds = listOf(
+        "сто", "двести", "триста", "четыреста",
+        "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот"
+    )
+    val numbers11_19 = listOf(
+        "одиннадцать", "двенадцать", "тринадцать", "четырнадцать",
+        "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"
+    )
+    val thousand = listOf(
+        "одна тысяча", "две тысячи", "тысячи", "тысяч"
+    )
+    val answer = mutableListOf<String>()
+    var numbers = digitNumber(n)
+    var num = n
+    var i = 0
+    val counter = numbers
+   /* if (numbers == 5) {
+        if (num / 1000 < 10) numbers--
+        else {
+            if (num / 1000 in 11..19) {
+                answer.add(i, numbers11_19[num / 1000 - 11])
+                answer.add(i + 1, thousand[3])
+                i++
+                numbers -= 2
+                num %= 1000
+            } else {
+                if (num / 1000 % 10 == 0) {
+                    answer.add(i, decades[num / 10000 - 1])
+                    answer.add(i + 1, thousand[3])
+                    i++
+                    numbers -= 2
+                    num %= 1000
+                } else {
+                    answer.add(i, decades[num / 1000 % 10 - 1])
+                    numbers--
+                    i++
+                    num %= 1000
+                }
+            }
+        }
+       // num %= 10000
+    }
 
-    if (digitNumber(n) == 1) {return digits[n - 1]}
+    if (numbers == 4) { //если более четырех цифр в числе
+        if (num / 1000 == 1) {
+            answer.add(i, thousand[0])
+        } else {
+            if (num / 1000 == 2) {
+                answer.add(i, thousand[1])
+            } else {
+                if (num / 1000 in 3..4) {
+                    answer.add(i, digits[num / 1000 - 1])
+                    answer.add(i + 1, thousand[2])
+                    i++
+                } else {
+                    answer.add(i, digits[num / 1000 - 1])
+                    answer.add(i + 1, thousand[3])
+                    i++
+                }
+            }
+        }
+
+        if (num % 1000 != 0 && num % 1000 in 100..999) {
+            numbers--
+            i++
+        }
+        if (num % 1000 != 0 && num % 1000 in 10..99) {
+            numbers -= 2
+            i++
+        }
+        if (num % 1000 != 0 && num % 1000 in 1..9) {
+            numbers -= 3
+            i++
+        }
+        num %= 1000
+    } */
+
+    for (z in numbers downTo 1) {
+
+        if (numbers == 3) { //для трехзначного числа
+            answer.add(i, hundreds[num / 100 - 1])
+            if (num % 100 != 0) {
+                numbers--
+                i++
+            }
+        }
+
+        if (numbers == 2) { //для двузначного числа
+            num %= 100
+            if (num < 10) numbers--
+            else {
+                if (num in 11..19) {
+                    answer.add(i, numbers11_19[num - 11])
+                } else {
+                    if (num % 10 == 0) {
+                        answer.add(i, decades[num / 10 - 1])
+                    } else {
+                        answer.add(i, decades[num / 10 % 10 - 1])
+                        numbers--
+                        i++
+                    }
+                }
+            }
+        }
+
+        if (numbers == 1) answer.add(i, digits[num % 10 - 1]) //для числа из одной цифры
+    }
+
     return answer.joinToString(separator = " ")
-} */
+}
