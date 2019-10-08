@@ -344,71 +344,10 @@ fun russian(n: Int): String {
     var num = n
     var i = 0
 
-    /* if (numbers == 5) {
-        if (num / 1000 < 10) numbers--
-        else {
-            if (num / 1000 in 11..19) {
-                answer.add(i, numbers11_19[num / 1000 - 11])
-                answer.add(i + 1, thousand[3])
-                i++
-                numbers -= 2
-                num %= 1000
-            } else {
-                if (num / 1000 % 10 == 0) {
-                    answer.add(i, decades[num / 10000 - 1])
-                    answer.add(i + 1, thousand[3])
-                    i++
-                    numbers -= 2
-                    num %= 1000
-                } else {
-                    answer.add(i, decades[num / 1000 % 10 - 1])
-                    numbers--
-                    i++
-                    num %= 1000
-                }
-            }
-        }
-       // num %= 10000
-    }
-
-    if (numbers == 4) { //если более четырех цифр в числе
-        if (num / 1000 == 1) {
-            answer.add(i, thousand[0])
-        } else {
-            if (num / 1000 == 2) {
-                answer.add(i, thousand[1])
-            } else {
-                if (num / 1000 in 3..4) {
-                    answer.add(i, digits[num / 1000 - 1])
-                    answer.add(i + 1, thousand[2])
-                    i++
-                } else {
-                    answer.add(i, digits[num / 1000 - 1])
-                    answer.add(i + 1, thousand[3])
-                    i++
-                }
-            }
-        }
-
-        if (num % 1000 != 0 && num % 1000 in 100..999) {
-            numbers--
-            i++
-        }
-        if (num % 1000 != 0 && num % 1000 in 10..99) {
-            numbers -= 2
-            i++
-        }
-        if (num % 1000 != 0 && num % 1000 in 1..9) {
-            numbers -= 3
-            i++
-        }
-        num %= 1000
-    } */
-
     if (numbers > 3) {
         numbers = 3
-        if (num % 1000 < 100) {numbers = 2}
-        if (num % 1000 == 0) {numbers = 0}
+        if (num % 1000 < 100) numbers = 2
+        if (num % 1000 == 0) numbers = 0
         num %= 1000
     }
 
@@ -424,12 +363,10 @@ fun russian(n: Int): String {
         num %= 100
         if (num < 10) numbers--
         else {
-            if (num in 11..19) {
-                answer.add(i, numbers11_19[num - 11])
-            } else {
-                if (num % 10 == 0) {
-                    answer.add(i, decades[num / 10 - 1])
-                } else {
+            if (num in 11..19) answer.add(i, numbers11_19[num - 11])
+            else {
+                if (num % 10 == 0) answer.add(i, decades[num / 10 - 1])
+                else {
                     answer.add(i, decades[num / 10 % 10 - 1])
                     numbers--
                     i++
@@ -451,9 +388,7 @@ fun russian(n: Int): String {
             if (numPart2 % 100 != 0) {
                 numbersPart2--
                 i++
-            } else {
-                answer.add(i + 1, thousand[3])
-            }
+            } else answer.add(i + 1, thousand[3])
         }
 
         if (numbersPart2 == 2) { //для двузначного числа
@@ -478,20 +413,16 @@ fun russian(n: Int): String {
 
         if (numbersPart2 == 1) { //для числа из одной цифры
             numPart2 %= 10
-            if (numPart2 == 1) {
-                answer.add(i, thousand[0])
-            } else {
-                if (numPart2 == 2) {
-                    answer.add(i, thousand[1])
-                } else {
+            if (numPart2 == 1) answer.add(i, thousand[0])
+            else {
+                if (numPart2 == 2) answer.add(i, thousand[1])
+                else {
                     if (numPart2 in 3..4) {
                         answer.add(i, digits[numPart2 - 1])
                         answer.add(i + 1, thousand[2])
-                        //i++
                     } else {
                         answer.add(i, digits[numPart2 - 1])
                         answer.add(i + 1, thousand[3])
-                        //i++
                     }
                 }
             }
