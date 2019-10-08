@@ -343,8 +343,8 @@ fun russian(n: Int): String {
     var numbers = digitNumber(n)
     var num = n
     var i = 0
-    val counter = numbers
-   /* if (numbers == 5) {
+
+    /* if (numbers == 5) {
         if (num / 1000 < 10) numbers--
         else {
             if (num / 1000 in 11..19) {
@@ -405,36 +405,98 @@ fun russian(n: Int): String {
         num %= 1000
     } */
 
-    for (z in numbers downTo 1) {
+    if (numbers > 3) {
+        numbers = 3
+        if (num % 1000 < 100) {numbers = 2}
+        if (num % 1000 == 0) {numbers = 0}
+        num %= 1000
+    }
 
-        if (numbers == 3) { //для трехзначного числа
-            answer.add(i, hundreds[num / 100 - 1])
-            if (num % 100 != 0) {
-                numbers--
+    if (numbers == 3) { //для трехзначного числа
+        answer.add(i, hundreds[num / 100 - 1])
+        if (num % 100 != 0) {
+            numbers--
+            i++
+        }
+    }
+
+    if (numbers == 2) { //для двузначного числа
+        num %= 100
+        if (num < 10) numbers--
+        else {
+            if (num in 11..19) {
+                answer.add(i, numbers11_19[num - 11])
+            } else {
+                if (num % 10 == 0) {
+                    answer.add(i, decades[num / 10 - 1])
+                } else {
+                    answer.add(i, decades[num / 10 % 10 - 1])
+                    numbers--
+                    i++
+                }
+            }
+        }
+    }
+
+    if (numbers == 1) answer.add(i, digits[num % 10 - 1]) //для числа из одной цифры
+
+
+    if (digitNumber(n) > 3) {
+        var numbersPart2 = digitNumber(n) - 3
+        var numPart2 = n / 1000
+        i = 0
+
+        if (numbersPart2 == 3) { //для трехзначного числа
+            answer.add(i, hundreds[numPart2 / 100 - 1])
+            if (numPart2 % 100 != 0) {
+                numbersPart2--
                 i++
+            } else {
+                answer.add(i + 1, thousand[3])
             }
         }
 
-        if (numbers == 2) { //для двузначного числа
-            num %= 100
-            if (num < 10) numbers--
+        if (numbersPart2 == 2) { //для двузначного числа
+            numPart2 %= 100
+            if (numPart2 < 10) numbersPart2--
             else {
-                if (num in 11..19) {
-                    answer.add(i, numbers11_19[num - 11])
+                if (numPart2 in 11..19) {
+                    answer.add(i, numbers11_19[numPart2 - 11])
+                    answer.add(i + 1, thousand[3])
                 } else {
-                    if (num % 10 == 0) {
-                        answer.add(i, decades[num / 10 - 1])
+                    if (numPart2 % 10 == 0) {
+                        answer.add(i, decades[numPart2 / 10 - 1])
+                        answer.add(i + 1, thousand[3])
                     } else {
-                        answer.add(i, decades[num / 10 % 10 - 1])
-                        numbers--
+                        answer.add(i, decades[numPart2 / 10 % 10 - 1])
+                        numbersPart2--
                         i++
                     }
                 }
             }
         }
 
-        if (numbers == 1) answer.add(i, digits[num % 10 - 1]) //для числа из одной цифры
-    }
+        if (numbersPart2 == 1) { //для числа из одной цифры
+            numPart2 %= 10
+            if (numPart2 == 1) {
+                answer.add(i, thousand[0])
+            } else {
+                if (numPart2 == 2) {
+                    answer.add(i, thousand[1])
+                } else {
+                    if (numPart2 in 3..4) {
+                        answer.add(i, digits[numPart2 - 1])
+                        answer.add(i + 1, thousand[2])
+                        //i++
+                    } else {
+                        answer.add(i, digits[numPart2 - 1])
+                        answer.add(i + 1, thousand[3])
+                        //i++
+                    }
+                }
+            }
+        }
 
+    }
     return answer.joinToString(separator = " ")
 }
