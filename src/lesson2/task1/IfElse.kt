@@ -3,7 +3,6 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
-import ru.spbstu.wheels.intersperse
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.pow
@@ -143,8 +142,8 @@ fun rookOrBishopThreatens(
 
     return when {
         (kingX == rookX || kingY == rookY) && differenceX == differenceY -> 3
-        kingX !== rookX && kingY !== rookY && differenceX == differenceY -> 2
-        (kingX == rookX || kingY == rookY) && differenceX !== differenceY -> 1
+        kingX != rookX && kingY != rookY && differenceX == differenceY -> 2
+        (kingX == rookX || kingY == rookY) && differenceX != differenceY -> 1
         else -> 0
     }
 }
@@ -161,7 +160,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     var longSide = 0.0
     var sideNumber2 = 0.0
     var sideNumber3 = 0.0
-    var cosOfAngle = 0.0
+    val cosOfAngle: Double
 
     longSide = maxOf(a, b, c)
     sideNumber3 = minOf(a, b, c)

@@ -109,7 +109,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    for ((key, value) in b) {
+        if (value == a[key]) return true
+    }
+    return false
+}
 
 /**
  * Простая
@@ -125,13 +130,17 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+    for ((key, value) in b) {
+        if (a[key] == value) a.remove(key)
+    }
+}
 
 /**
  * Простая
  *
  * Для двух списков людей найти людей, встречающихся в обоих списках.
- * В выходном списке не должно быть повторяюихся элементов,
+ * В выходном списке не должно быть повторяющихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()

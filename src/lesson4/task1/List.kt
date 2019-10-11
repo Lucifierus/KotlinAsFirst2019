@@ -6,9 +6,8 @@ import lesson1.task1.discriminant
 import lesson1.task1.sqr
 import lesson3.task1.digitNumber
 import lesson3.task1.minDivisor
-import kotlin.math.sqrt
 import kotlin.math.pow
-import kotlin.system.exitProcess
+import kotlin.math.sqrt
 
 
 /**
@@ -123,8 +122,8 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  */
 fun abs(v: List<Double>): Double {
     var sum = 0.0
-    for (i in 0 until v.size) {
-        sum += sqr(v[i])
+    for (element in v) {
+        sum += sqr(element)
     }
     return sqrt(sum)
 }
@@ -161,7 +160,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Int>, b: List<Int>): Int {
     var c = 0
-    for (i in 0 until a.size) {
+    for (i in a.indices) {
         c += a[i] * b[i]
     }
     return c
@@ -178,8 +177,8 @@ fun times(a: List<Int>, b: List<Int>): Int {
 fun polynom(p: List<Int>, x: Int): Int {
     var poly = 0
     var factorX = 1
-    for (i in 0 until p.size) {
-        poly += p[i] * factorX
+    for (element in p) {
+        poly += element * factorX
         factorX *= x
     }
     return poly
@@ -262,16 +261,8 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     val abc = "abcdefghijklmnopqrstuvwxyz"
-    val list = convert(n, base).toMutableList()
-    var convertation = " "
-    for (i in 0 until list.size) {
-        if (list[i] > 9) {
-            convertation += abc[list[i] - 10]
-        } else {
-            convertation += list[i]
-        }
-    }
-    return convertation
+    val list = convert(n, base)
+    return list.joinToString(separator = "", transform = { if (it > 9) abc[it - 10].toString() else it.toString() })
 }
 
 /**
@@ -283,7 +274,7 @@ fun convertToString(n: Int, base: Int): String {
  */
 fun decimal(digits: List<Int>, base: Int): Int {
     var answer = 0
-    for (i in 0 until digits.size) {
+    for (i in digits.indices) {
         answer += digits[i] * base.toDouble().pow(digits.size - i - 1).toInt()
     }
     return answer
@@ -427,7 +418,6 @@ fun russian(n: Int): String {
                 }
             }
         }
-
     }
     return answer.joinToString(separator = " ")
 }

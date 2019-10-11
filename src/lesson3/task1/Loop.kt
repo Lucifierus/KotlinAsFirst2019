@@ -74,7 +74,7 @@ fun digitNumber(n: Int): Int {
     do {
         number /= 10
         count++
-    } while (number !== 0)
+    } while (number != 0)
     return count
 }
 
@@ -114,7 +114,7 @@ fun lcm(m: Int, n: Int): Int {
         k = max(n, m)
         do {
             k += max(n, m)
-        } while (k % n !== k % m)
+        } while (k % n != k % m)
     }
     return k
 }
@@ -206,7 +206,7 @@ fun collatzSteps(x: Int): Int {
             number = 3 * number + 1
         }
 
-    } while (number !== 1)
+    } while (number != 1)
     return count
 }
 
@@ -323,10 +323,7 @@ fun ultimateSquareFibSequenceDigit(n: Int, func: (Int) -> Int): Int {
     }
 
     //алгоритм нахождения конкретной цифры из члена последовательности
-    if (amountDigits == n) return numbers % 10
-    answer = numbers / 10.toDouble().pow(amountDigits - n).toInt()
-    if (digitNumber(answer) > 1) answer %= 10
-
+    answer = numbers / 10.toDouble().pow(amountDigits - n).toInt() % 10
     return answer
 }
 
