@@ -143,7 +143,13 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
  * В выходном списке не должно быть повторяющихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    val list = mutableListOf<String>()
+    for (element in a.indices) {
+        if (a[element] in b && a[element] !in list) list.add(a[element])
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -162,7 +168,14 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val answer = mapA.toMutableMap()
+    for ((key, value) in mapB) {
+        if (key in answer && value != answer[key]) answer.put(key, mapA[key] + ", " + mapB[key])
+        else answer += key to value
+    }
+    return answer
+}
 
 /**
  * Средняя
@@ -174,7 +187,19 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val map = mutableMapOf<String, Double>()
+    val list = stockPrices.toMutableList()
+    val answer = mutableMapOf<String, Double>()
+    for ((key, value) in list) {
+        if (key in map && value != map[key]) map + list
+        else map += key to value
+    }
+    for ((key, value) in map) {
+        answer[key] = value / value
+    }
+    return map
+}
 
 /**
  * Средняя
