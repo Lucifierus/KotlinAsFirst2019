@@ -110,10 +110,10 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
-    for ((key, value) in b) {
-        if (value == a[key]) return true
+    for ((key, value) in a) {
+        if (value != b[key] || key !in b) return false
     }
-    return false
+    return true
 }
 
 /**
@@ -196,9 +196,11 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
         else map += key to value
     }
     for ((key, value) in map) {
-        answer[key] = value / value
+        println(map[key])
+        //answer[key] = value.sum() / value.size()
+        println(answer)
     }
-    return map
+    return answer
 }
 
 /**
