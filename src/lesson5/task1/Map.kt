@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import lesson4.task1.mean
+
 /**
  * Пример
  *
@@ -76,7 +78,9 @@ fun removeFillerWords(
  */
 fun buildWordSet(text: List<String>): MutableSet<String> {
     val res = mutableSetOf<String>()
-    for (word in text) res.add(word)
+    for (word in text) {
+        res.add(word)
+    }
     return res
 }
 
@@ -131,9 +135,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
-    for ((key, value) in b) {
-        if (a[key] == value) a.remove(key)
-    }
+    for ((key, value) in b) if (a[key] == value) a.remove(key)
 }
 
 /**
@@ -171,7 +173,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
     val answer = mapA.toMutableMap()
     for ((key, value) in mapB) {
-        if (key in answer && value != answer[key]) answer.put(key, mapA[key] + ", " + mapB[key])
+        if (key in answer && value != answer[key]) answer[key] = mapA[key] + ", " + mapB[key]
         else answer += key to value
     }
     return answer
@@ -188,18 +190,15 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    val map = mutableMapOf<String, Double>()
-    val list = stockPrices.toMutableList()
+    val map = mutableMapOf<String, MutableList<Double>>()
     val answer = mutableMapOf<String, Double>()
-    for ((key, value) in list) {
-        if (key in map && value != map[key]) map + list
-        else map += key to value
+
+    for ((key, value) in stockPrices) {
+        if (key !in map) map[key] = mutableListOf(value)
+        else map[key] = (map[key]!! + value).toMutableList()
     }
-    for ((key, value) in map) {
-        println(map[key])
-        //answer[key] = value.sum() / value.size()
-        println(answer)
-    }
+
+    for ((key, value) in map) answer[key] = mean(value)
     return answer
 }
 
@@ -218,7 +217,17 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var answer: String? = null
+    var minCost = Double.MAX_VALUE
+    for ((key, value) in stuff) {
+        if (value.first == kind && value.second <= minCost) {
+            answer = key
+            minCost = value.second
+        }
+    }
+    return answer
+}
 
 /**
  * Средняя
@@ -229,7 +238,13 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    val newList = word.toList()
+    for (i in newList) {
+        if (i !in chars) return false
+    }
+    return true
+}
 
 /**
  * Средняя
@@ -243,7 +258,14 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val map = mutableMapOf<String, Int>()
+    val answer = mutableMapOf<String, Int>()
+
+    for (i in list) map[i] = map.getOrDefault(i, 0) + 1
+    for ((key, value) in map) if (map[key] != 1) answer[key] = value
+    return answer
+}
 
 /**
  * Средняя
