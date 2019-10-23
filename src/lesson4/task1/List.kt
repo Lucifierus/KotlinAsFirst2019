@@ -260,9 +260,10 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    val abc = "abcdefghijklmnopqrstuvwxyz"
     val list = convert(n, base)
-    return list.joinToString(separator = "", transform = { if (it > 9) abc[it - 10].toString() else it.toString() })
+    return list.joinToString(
+        separator = "",
+        transform = { if (it > 9) (it.toChar() + 87).toString() else it.toString() })
 }
 
 /**
