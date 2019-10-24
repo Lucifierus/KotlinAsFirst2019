@@ -276,7 +276,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
 fun hasAnagrams(words: List<String>): Boolean {
     for (i in words) {
         for (z in words) {
-            if (z.toSet() == setOf("") && i.toSet() == setOf("")) return true
+            if (z.toSet() == setOf(null) && i.toSet() == setOf(null)) return true
             if (z != i && z.toSet().intersect(i.toSet()) == z.toSet()) return true
         }
     }
