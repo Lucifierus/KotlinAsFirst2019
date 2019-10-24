@@ -283,7 +283,7 @@ fun hasAnagrams(words: List<String>): Boolean {
 
     for (i in list.indices) {
         for (j in 1 until list.size) {
-            if (list[i].first == list[j].first && list[i].second.reversed() == list[j].second) return true
+            if (list[i].first == list[j].first && (list[i].second.reversed() == list[j].second || list[i].second == list[j].second)) return true
         }
     }
 
