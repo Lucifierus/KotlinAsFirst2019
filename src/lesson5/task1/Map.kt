@@ -4,6 +4,7 @@ package lesson5.task1
 
 import lesson4.task1.mean
 
+
 /**
  * Пример
  *
@@ -273,16 +274,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean {
-    for (i in words) {
-        for (z in words) {
-            if (z.toSet() == setOf(null) && i.toSet() == setOf(null)) return true
-            if (z != i && z.toSet().intersect(i.toSet()) == z.toSet()) return true
-        }
-    }
-    return false
-}
-
+fun hasAnagrams(words: List<String>): Boolean = TODO()
 /**
  * Сложная
  *
