@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 /**
  * Пример
  *
@@ -69,7 +71,21 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val list = listOf(
+        "января", "февраля", "марта", "апреля", "мая", "июня",
+        "июля", "августа", "сентября", "октября", "ноября", "декабря"
+    )
+    val parts = str.split(" ")
+    if (parts.size != 3) return ""
+    val day = parts[0].toInt()
+    val year = parts[2].toInt()
+    val month = list.indexOf(parts[1]) + 1
+
+    if (daysInMonth(month, year) < day || parts[1] !in list) return ""
+
+    return String.format("%02d.%02d.%02d", day, month, year)
+}
 
 /**
  * Средняя
@@ -81,7 +97,23 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val list = listOf(
+        "января", "февраля", "марта", "апреля", "мая", "июня",
+        "июля", "августа", "сентября", "октября", "ноября", "декабря"
+    )
+    val parts = digital.split(".")
+    val day = parts[0].toIntOrNull()
+    val year = parts[2].toIntOrNull()
+    val month = parts[1].toIntOrNull()  // тут значение Int
+
+    if (parts.size != 3 || day == null || month == null || year == null ||
+        day < 1 || month !in 1..12 || year < 1
+    ) return ""
+    if (day > daysInMonth(month, year)) return ""
+
+    return day.toString() + " " + list[month - 1] + " " + year
+}
 
 /**
  * Средняя
@@ -97,7 +129,19 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    val set = setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '(', ')', '+', ' ')
+    if (phone.toSet().union(set) != set) return ""
+    if ("()" in phone) return ""
+    var answer = ""
+    val number = phone.split("(", ")", "-")
+    for (part in number) {
+        for (word in part) {
+            if (word.toString() != " " && word.toString() != ",") answer += word
+        }
+    }
+    return answer
+}
 
 /**
  * Средняя
@@ -109,7 +153,16 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var answer = -1
+    val set = setOf(' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '%')
+    if (jumps.toSet().union(set) != set) return answer
+    val jump = jumps.split(" ", "%", "-")
+    for (part in jump) {
+        if (part != "" && part.toInt() > answer) answer = part.toInt()
+    }
+    return answer
+}
 
 /**
  * Сложная

@@ -274,7 +274,19 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean {
+    val set = mutableSetOf<Map<Char, Int>>()
+
+    for (word in words) {
+        val counter = mutableMapOf<Char, Int>()
+        for (charInWord in word) {
+            counter[charInWord] = counter.getOrDefault(charInWord, 0) + 1
+        }
+        set.add(counter)
+    }
+    return set.size < words.size
+}
+
 
 
 /**
@@ -301,7 +313,26 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    val map = mutableMapOf<String, Set<String>>()
+    var logical = true //продолжать ли или нет цикл
+    while (logical) {
+        for ((name, friend) in friends) {
+            logical = false
+            map.putIfAbsent(name, friend as MutableSet<String>) //добавляю в ответ имена людей, если их не было
+
+            for (element in friend) { //добавляю в мап человека друзей его друзей
+                map[name] = map[name]!! + listOf(element)
+                //map[name]!!.addAll(listOf(element))
+                //map[name]?.add(element)
+            }
+
+            if (friend.size < map[name]!!.size) logical = true //если что-то изменилось, нужно прогнать цикл еще раз   !!пока что не актуально
+        }
+    }
+
+    return map
+}
 
 /**
  * Сложная
@@ -320,7 +351,18 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    var answer: Pair<Int, Int> = Pair(-1, -1)
+    for (i in list.indices - 1) {
+        for (j in i + 1 until list.size) {
+            if (list[i] + list[j] == number) {
+                answer = Pair(i, j)
+                return answer
+            }
+        }
+    }
+    return answer
+}
 
 /**
  * Очень сложная
