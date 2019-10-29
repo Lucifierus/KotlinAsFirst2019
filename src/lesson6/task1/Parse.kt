@@ -105,7 +105,7 @@ fun dateDigitToStr(digital: String): String {
     val parts = digital.split(".")
     val day = parts[0].toIntOrNull()
     val year = parts[2].toIntOrNull()
-    val month = parts[1].toIntOrNull()  // тут значение Int
+    val month = parts[1].toIntOrNull()
 
     if (parts.size != 3 || day == null || month == null || year == null ||
         day < 1 || month !in 1..12 || year < 1

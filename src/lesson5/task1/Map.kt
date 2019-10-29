@@ -322,7 +322,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
             map.putIfAbsent(name, friend as MutableSet<String>) //добавляю в ответ имена людей, если их не было
 
             for (element in friend) { //добавляю в мап человека друзей его друзей
-                map[name] = map[name]!! + listOf(element)
+                map[name] = map[name]!! + listOf(element) // не работает, спросить на практике
                 //map[name]!!.addAll(listOf(element))
                 //map[name]?.add(element)
             }
