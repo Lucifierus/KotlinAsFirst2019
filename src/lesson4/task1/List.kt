@@ -263,7 +263,7 @@ fun convertToString(n: Int, base: Int): String {
     val list = convert(n, base)
     return list.joinToString(
         separator = "",
-        transform = { if (it > 9) (it.toChar() + 87).toString() else it.toString() })
+        transform = { if (it > 9) (it.toChar() + 'a'.toInt() - 10).toString() else it.toString() })
 }
 
 /**

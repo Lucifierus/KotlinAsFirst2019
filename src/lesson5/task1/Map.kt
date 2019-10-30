@@ -238,11 +238,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    if (word == " ") return false
-    return chars.joinToString().toLowerCase().toSet().intersect(word.toLowerCase().toSet()) == word.toLowerCase().toSet()
-}
-
+fun canBuildFrom(chars: List<Char>, word: String): Boolean =
+    chars.map { it.toLowerCase() }.intersect(word.toLowerCase().toSet()) == word.toLowerCase().toSet()
 
 /**
  * Средняя
@@ -258,7 +255,6 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val map = mutableMapOf<String, Int>()
-
     for (i in list) {
         map[i] = map.getOrDefault(i, 0) + 1
     }
@@ -275,19 +271,17 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
 fun hasAnagrams(words: List<String>): Boolean {
-    val set = mutableSetOf<Map<Char, Int>>()
+    val mainSet = mutableSetOf<Map<Char, Int>>()
 
     for (word in words) {
         val counter = mutableMapOf<Char, Int>()
         for (charInWord in word) {
             counter[charInWord] = counter.getOrDefault(charInWord, 0) + 1
         }
-        set.add(counter)
+        mainSet.add(counter)
     }
-    return set.size < words.size
+    return mainSet.size < words.size
 }
-
-
 
 /**
  * Сложная
@@ -352,7 +346,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    var answer: Pair<Int, Int> = Pair(-1, -1)
+    var answer = Pair(-1, -1)
     for (i in list.indices - 1) {
         for (j in i + 1 until list.size) {
             if (list[i] + list[j] == number) {
