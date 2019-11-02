@@ -272,7 +272,6 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  */
 fun hasAnagrams(words: List<String>): Boolean {
     val mainSet = mutableSetOf<Map<Char, Int>>()
-
     for (word in words) {
         val counter = mutableMapOf<Char, Int>()
         for (charInWord in word) {
@@ -308,23 +307,19 @@ fun hasAnagrams(words: List<String>): Boolean {
  *        )
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
-    val map = mutableMapOf<String, Set<String>>()
+    val map = mutableMapOf<String, MutableSet<String>>()
     var logical = true //продолжать ли или нет цикл
     while (logical) {
+        logical = false
+
         for ((name, friend) in friends) {
-            logical = false
-            map.putIfAbsent(name, friend as MutableSet<String>) //добавляю в ответ имена людей, если их не было
+            if (map.getOrPut(name) { mutableSetOf() }.addAll(friend)) logical = true
+            println(logical)
 
-            for (element in friend) { //добавляю в мап человека друзей его друзей
-                map[name] = map[name]!! + listOf(element) // не работает, спросить на практике
-                //map[name]!!.addAll(listOf(element))
-                //map[name]?.add(element)
-            }
-
-            if (friend.size < map[name]!!.size) logical = true //если что-то изменилось, нужно прогнать цикл еще раз   !!пока что не актуально
+            //println(map.getOrPut(name) { mutableSetOf() }.addAll(friend))
+//            map.getOrPut(name) { mutableSetOf() }.addAll(friend)
         }
     }
-
     return map
 }
 
@@ -347,13 +342,13 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var answer = Pair(-1, -1)
-    for (i in list.indices - 1) {
-        for (j in i + 1 until list.size) {
-            if (list[i] + list[j] == number) {
-                answer = Pair(i, j)
-                return answer
-            }
+    val mapOfInt = mutableMapOf<Int, Int>()
+    for (i in list.indices) {
+        if (list[i] in mapOfInt) {
+            answer = mapOfInt.getOrDefault(list[i], 0) to i
+            break
         }
+        mapOfInt[number - list[i]] = i
     }
     return answer
 }
