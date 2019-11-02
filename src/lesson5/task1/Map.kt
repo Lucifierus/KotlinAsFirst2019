@@ -307,20 +307,61 @@ fun hasAnagrams(words: List<String>): Boolean {
  *        )
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
-    val map = mutableMapOf<String, MutableSet<String>>()
-    var logical = true //продолжать ли или нет цикл
-    while (logical) {
-        logical = false
+    val answer = mutableMapOf<String, MutableSet<String>>()
+    val allFriends = mutableSetOf<String>() //все друзья
+    val badFriends = mutableSetOf<String>() //друзья, которые по условию 2
 
-        for ((name, friend) in friends) {
-            if (map.getOrPut(name) { mutableSetOf() }.addAll(friend)) logical = true
-            println(logical)
 
-            //println(map.getOrPut(name) { mutableSetOf() }.addAll(friend))
-//            map.getOrPut(name) { mutableSetOf() }.addAll(friend)
+    for ((name, friend) in friends) {
+        allFriends += name
+        allFriends += friend
+        answer[name] = friend as MutableSet<String>
+    }
+
+    println("friendsA = $allFriends")
+    println("-----")
+
+    for (element in allFriends) {
+        println("Элемент = $element")
+        for ((name, friend) in answer) {
+            println("answer =         $answer")
+            println("name - friend =       $name  ---  $friend")
+            println("friend =                    $friend")
+            print("friend + answer[element] =   ")
+//            println(friend + answer[element] as MutableSet<String>)
+
+
+            if (element in friend && answer[element] != null) {
+                val something = answer[element] as MutableSet<String> + friend
+                answer[name] = something as MutableSet<String>
+                println("!!!!!!!первое условие да")
+            }
+            if (element in friend && answer[element] == null) {
+                //answer[element] = mutableSetOf()
+                badFriends.add(element)
+                println("!!!!!!!второе условие да")
+            }
+
+            println("еще раз answer = $answer")
+            println("             ")
+        }
+        println("------------------------------------")
+    }
+
+    println(badFriends)
+    for (z in badFriends) { //добавление тех, кто ни с кем не дружит (пустые)
+        answer.put(z, mutableSetOf())
+    }
+
+    for ((first, second) in answer) { //удаление самого себя из списка друзей, чтобы не дружить с самим собой
+        if (first in second) {
+            second.remove(first)
+            println("я в условии")
         }
     }
-    return map
+
+
+    return answer
 }
 
 /**
