@@ -338,6 +338,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
             second.remove(first)
         }
     }
+
     return answer
 }
 
