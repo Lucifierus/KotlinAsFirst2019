@@ -195,6 +195,7 @@ fun plusMinus(expression: String): Int {
     val legalSymbols = setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', ' ')
     val parts = expression.split(" ")
 
+    if (expression == "") throw IllegalArgumentException() //если пустая строка
     for (word in expression) { //чтобы не было лишних символов
         if (word !in legalSymbols) throw IllegalArgumentException()
     }
