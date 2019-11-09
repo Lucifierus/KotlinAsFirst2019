@@ -71,18 +71,18 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
+val listOfMonths = listOf(
+    "января", "февраля", "марта", "апреля", "мая", "июня",
+    "июля", "августа", "сентября", "октября", "ноября", "декабря"
+)
 fun dateStrToDigit(str: String): String {
-    val list = listOf(
-        "января", "февраля", "марта", "апреля", "мая", "июня",
-        "июля", "августа", "сентября", "октября", "ноября", "декабря"
-    )
     val parts = str.split(" ")
     if (parts.size != 3) return ""
-    val day = parts[0].toInt()
-    val year = parts[2].toInt()
-    val month = list.indexOf(parts[1]) + 1
+    val day = parts[0].toIntOrNull()
+    val year = parts[2].toIntOrNull()
+    val month = listOfMonths.indexOf(parts[1]) + 1
 
-    if (daysInMonth(month, year) < day || parts[1] !in list) return ""
+    if (daysInMonth(month, year!!) < day!! || parts[1] !in listOfMonths) return ""
 
     return String.format("%02d.%02d.%d", day, month, year)
 }
@@ -98,10 +98,6 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    val list = listOf(
-        "января", "февраля", "марта", "апреля", "мая", "июня",
-        "июля", "августа", "сентября", "октября", "ноября", "декабря"
-    )
     val parts = digital.split(".")
     val day = parts[0].toIntOrNull()
     val year = parts[2].toIntOrNull()
@@ -112,7 +108,7 @@ fun dateDigitToStr(digital: String): String {
     ) return ""
     if (day > daysInMonth(month, year)) return ""
 
-    return day.toString() + " " + list[month - 1] + " " + year
+    return day.toString() + " " + listOfMonths[month - 1] + " " + year
 }
 
 /**
@@ -130,8 +126,8 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    val set = setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '(', ')', '+', ' ')
-    if (phone.toSet().union(set) != set) return ""
+    val setOfLegal = setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '(', ')', '+', ' ')
+    if (phone.toSet().union(setOfLegal) != setOfLegal) return ""
     if ("()" in phone) return ""
     var answer = ""
     val number = phone.split("(", ")", "-")
@@ -155,8 +151,8 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     var answer = -1
-    val set = setOf(' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '%')
-    if (jumps.toSet().union(set) != set) return answer
+    val setOfChars = setOf(' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '%')
+    if (jumps.toSet().union(setOfChars) != setOfChars) return answer
     val jump = jumps.split(" ", "%", "-")
     for (part in jump) {
         if (part != "" && part.toInt() > answer) answer = part.toInt()
@@ -175,7 +171,16 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    var answer = -1
+    val parts = jumps.split(" ")
+    for (i in parts.indices) {
+        if (parts[i].contains("+") && parts[i - 1].toInt() > answer) {
+            answer = parts[i - 1].toInt()
+        }
+    }
+    return answer
+}
 
 /**
  * Сложная
@@ -186,7 +191,37 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val legalSymbols = setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', ' ')
+    val parts = expression.split(" ")
+
+    for (word in expression) { //чтобы не было лишних символов
+        if (word !in legalSymbols) throw IllegalArgumentException()
+    }
+    if (parts.size == 1) { //исключение чтобы не было +2 или 11111- и подобного
+        for (symbol in parts[0]) {
+            if (symbol in setOf('+', '-')) throw IllegalArgumentException()
+        }
+    }
+    if (parts.size % 2 == 0) throw IllegalArgumentException() //проверка на нечетность
+    var i = 2
+    while (i <= parts.size - 1) { //проверка чтобы знаки были между цифрами
+        if (parts[i - 1] !in setOf("+", "-")) throw IllegalArgumentException()
+        i += 2
+    }
+    i = 0
+    while (i <= parts.size - 1) { //проверка чтобы цифры были положительными
+        if (parts[i].toInt() < 0) throw IllegalArgumentException()
+        i += 2
+    }
+
+    var answer = parts[0].toInt()
+    for (i in 1..parts.size - 2 step 2) {
+        if (parts[i] == "+") answer += parts[i + 1].toInt()
+        if (parts[i] == "-") answer -= parts[i + 1].toInt()
+    }
+    return answer
+}
 
 /**
  * Сложная
@@ -197,7 +232,16 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    var answer = 0
+    val words = str.split(" ")
+    if (words.size == 1) return -1
+    for (i in 0 until words.size - 1) {
+        if (words[i].toLowerCase() == words[i + 1].toLowerCase()) return answer
+        answer += words[i].length + 1
+    }
+    return -1
+}
 
 /**
  * Сложная
@@ -210,7 +254,30 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    val legal = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя0123456789.; "
+    var answer = ""
+    for (word in description) {
+        if (word !in legal) return answer
+    }
+    if (description.isEmpty()) return answer
+    var maxPrice = 0.0
+    val allPairs = mutableListOf<Pair<String, Double>>()
+    val parts = description.split("; ")
+
+    for (goodsAndPrice in parts) { //заполняю это все в пары (товар to цена)
+        val something = goodsAndPrice.split(" ")
+        allPairs.add(something[0] to something[1].toDouble())
+    }
+
+    for ((first, second) in allPairs) { //ищу самый дорогой элемент
+        if (second > maxPrice) {
+            maxPrice = second
+            answer = first
+        }
+    }
+    return answer
+}
 
 /**
  * Сложная
