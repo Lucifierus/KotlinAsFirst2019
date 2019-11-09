@@ -43,11 +43,11 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  */
 fun daysInMonth(month: Int, year: Int): Int {
     var isLeapYear = false
-    if (year % 4 !== 0) {
+    if (year % 4 != 0) {
         isLeapYear = false
     }                //если год не делится на 4, то он не високосный
     else {                                                  //иначе
-        if (year % 100 !== 0) {
+        if (year % 100 != 0) {
             isLeapYear = true
         }       //если год не делится на 100, то он високосный
         else {                                          //иначе
