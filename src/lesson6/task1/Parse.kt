@@ -75,6 +75,7 @@ val listOfMonths = listOf(
     "января", "февраля", "марта", "апреля", "мая", "июня",
     "июля", "августа", "сентября", "октября", "ноября", "декабря"
 )
+
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ")
     if (parts.size != 3) return ""
@@ -258,7 +259,7 @@ fun firstDuplicateIndex(str: String): Int {
 fun mostExpensive(description: String): String {
     val legal = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" +
             "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя" +
-            "0123456789.; "
+            "0123456789.;, "
     var answer = ""
     for (word in description) {
         if (word !in legal) return answer
