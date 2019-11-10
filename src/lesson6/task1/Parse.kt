@@ -274,7 +274,7 @@ fun mostExpensive(description: String): String {
     }
 
     for ((first, second) in allPairs) { //ищу самый дорогой элемент
-        if (second > maxPrice) {
+        if (second >= maxPrice) {
             maxPrice = second
             answer = first
         }
