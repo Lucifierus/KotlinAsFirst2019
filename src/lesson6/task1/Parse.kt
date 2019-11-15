@@ -76,14 +76,16 @@ val listOfMonths = listOf(
     "июля", "августа", "сентября", "октября", "ноября", "декабря"
 )
 
+fun dateStrDigitChecker(day: Int, month: Int, year: Int): Boolean = day < daysInMonth(month, year)
+
 fun dateStrToDigit(str: String): String {
+    if (!str.contains(Regex("""[0-9]+\s[а-я]+\s[0-9]+"""))) return "" //checker
     val parts = str.split(" ")
-    if (parts.size != 3) return ""
     val day = parts[0].toIntOrNull()
     val year = parts[2].toIntOrNull()
     val month = listOfMonths.indexOf(parts[1]) + 1
 
-    if (daysInMonth(month, year!!) < day!! || parts[1] !in listOfMonths) return ""
+    if (day == null || year == null || !dateStrDigitChecker(day, month, year) || parts[1] !in listOfMonths) return ""
 
     return String.format("%02d.%02d.%d", day, month, year)
 }
@@ -99,17 +101,18 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
+    if (!digital.contains(Regex("""[0-9]+\.[0-9]+\.[0-9]+"""))) return ""
     val parts = digital.split(".")
     val day = parts[0].toIntOrNull()
-    val year = parts[2].toIntOrNull()
     val month = parts[1].toIntOrNull()
+    val year = parts[2].toIntOrNull()
 
-    if (parts.size != 3 || day == null || month == null || year == null ||
-        day < 1 || month !in 1..12 || year < 0
+    if (day == null || month == null || year == null ||
+        day < 1 || month !in 1..12 || year < 0 ||
+        !dateStrDigitChecker(day, month, year) || parts.size != 3
     ) return ""
-    if (day > daysInMonth(month, year)) return ""
 
-    return day.toString() + " " + listOfMonths[month - 1] + " " + year
+    return String.format("%d %s %d", day, listOfMonths[month - 1], year)
 }
 
 /**
@@ -127,16 +130,25 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
+    val answer = phone.filter { it !in listOf('(', ')', '-', ' ') }
     val setOfLegal = setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '(', ')', '+', ' ')
-    if (phone.toSet().union(setOfLegal) != setOfLegal) return ""
-    if ("()" in phone) return ""
-    var answer = ""
-    val number = phone.split("(", ")", "-")
-    for (part in number) {
-        for (word in part) {
-            if (word.toString() != " " && word.toString() != ",") answer += word
-        }
+    val checker1 = phone.toSet().union(setOfLegal) == setOfLegal //проверка на посторонние символы
+    val checker2 = answer.contains(Regex("""[0123456789]""")) //проверка есть ли вообще цифры
+    var checker3 = true
+    var checker4 = true
+    var checker5 = true
+
+    if ('+' in answer) {
+        checker3 = answer.contains(Regex("""("+")?""")) //проверка на количество символов +
+        checker5 = phone[0] == '+' // проверяет, если есть плюс, на первом ли он месте
     }
+
+    if ('(' in phone) {
+        val something = phone.filter { it !in listOf(' ', '-') }
+        checker4 = something.contains(Regex("""\(\d+\)"""))  //если есть скобки, то проверка на наличие цифр в них
+    }
+
+    if (!checker1 || !checker2 || !checker3 || !checker4 || !checker5) return ""
     return answer
 }
 
@@ -152,8 +164,11 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     var answer = -1
+    val checker1 = jumps.contains(Regex("""[0-9]+\s(([%\-])\s)*"""))
     val setOfChars = setOf(' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '%')
-    if (jumps.toSet().union(setOfChars) != setOfChars) return answer
+    val checker2 = jumps.toSet().union(setOfChars) == setOfChars
+    if (!checker1 || !checker2) return answer
+
     val jump = jumps.split(" ", "%", "-")
     for (part in jump) {
         if (part != "" && part.toInt() > answer) answer = part.toInt()
@@ -218,9 +233,9 @@ fun plusMinus(expression: String): Int {
     }
 
     var answer = parts[0].toInt()
-    for (i in 1..parts.size - 2 step 2) {
-        if (parts[i] == "+") answer += parts[i + 1].toInt()
-        if (parts[i] == "-") answer -= parts[i + 1].toInt()
+    for (z in 1..parts.size - 2 step 2) {
+        if (parts[z] == "+") answer += parts[z + 1].toInt()
+        if (parts[z] == "-") answer -= parts[z + 1].toInt()
     }
     return answer
 }
