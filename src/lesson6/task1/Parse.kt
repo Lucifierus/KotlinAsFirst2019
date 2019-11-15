@@ -76,7 +76,7 @@ val listOfMonths = listOf(
     "июля", "августа", "сентября", "октября", "ноября", "декабря"
 )
 
-fun dateStrDigitChecker(day: Int, month: Int, year: Int): Boolean = day < daysInMonth(month, year)
+fun dateStrDigitChecker(day: Int, month: Int, year: Int): Boolean = day <= daysInMonth(month, year)
 
 fun dateStrToDigit(str: String): String {
     if (!str.contains(Regex("""[0-9]+\s[а-я]+\s[0-9]+"""))) return "" //checker
