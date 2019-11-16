@@ -68,7 +68,6 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     return answerMap
 }
 
-
 /**
  * Средняя
  *
@@ -83,7 +82,38 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val mistakes = listOf(
+        'ж' to 'ы', 'ж' to 'ю', 'ж' to 'я',
+        'ш' to 'ы', 'ш' to 'ю', 'ш' to 'я',
+        'ч' to 'я', 'ч' to 'ю',
+        'щ' to 'я', 'щ' to 'ю'
+    )
+
+    val writer = File(outputName).bufferedWriter()
+    for (line in File(inputName).readLines()) { //смотрю по линии
+        writer.write(line[0].toString()) //запись первого символа
+        for (i in 1 until line.length) { //по букве в линии
+            var mistake = false
+            for ((first, second) in mistakes) { //проверяю принадлежность к ошибкам
+                if (first == line[i - 1].toLowerCase() && second == line[i].toLowerCase()) mistake = true
+            }
+
+            if (!mistake) { //если ошибок нет, то записываю символ как есть
+                writer.write(line[i].toString())
+            } else { //иначе проверяю регистр и заменяю
+                when (line[i].toString()) {
+                    "ы" -> writer.write("и")
+                    "Ы" -> writer.write("И")
+                    "я" -> writer.write("а")
+                    "Я" -> writer.write("А")
+                    "ю" -> writer.write("у")
+                    "Ю" -> writer.write("У")
+                }
+            }
+        }
+        writer.newLine()
+    }
+    writer.close()
 }
 
 /**
