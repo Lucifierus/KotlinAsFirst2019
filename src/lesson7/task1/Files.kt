@@ -85,8 +85,8 @@ fun sibilants(inputName: String, outputName: String) {
     val mistakes = listOf(
         'ж' to 'ы', 'ж' to 'ю', 'ж' to 'я',
         'ш' to 'ы', 'ш' to 'ю', 'ш' to 'я',
-        'ч' to 'я', 'ч' to 'ю',
-        'щ' to 'я', 'щ' to 'ю'
+        'ч' to 'ы', 'ч' to 'ю', 'ч' to 'я',
+        'щ' to 'ы', 'щ' to 'ю', 'щ' to 'я'
     )
 
     val writer = File(outputName).bufferedWriter()
