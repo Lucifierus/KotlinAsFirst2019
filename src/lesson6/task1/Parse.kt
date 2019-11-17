@@ -272,14 +272,8 @@ fun firstDuplicateIndex(str: String): Int {
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    val legal = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" +
-            "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя" +
-            "0123456789.;, "
     var answer = ""
-    for (word in description) {
-        if (word !in legal) return answer
-    }
-    if (description.isEmpty()) return answer
+    if (!description.contains(Regex("""[А-яA-z~!@#%^&*+.,-]+\s[0-9]+(\.[0-9])?(;\s[А-яA-z~!@#%^&*+.,-]+\s[0-9]+(\.[0-9])?)*"""))) return answer
     var maxPrice = 0.0
     val allPairs = mutableListOf<Pair<String, Double>>()
     val parts = description.split("; ")
