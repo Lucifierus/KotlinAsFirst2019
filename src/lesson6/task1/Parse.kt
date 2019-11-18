@@ -211,24 +211,24 @@ fun plusMinus(expression: String): Int {
     val legalSymbols = setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', ' ')
     val parts = expression.split(" ")
 
-    if (expression == "") throw IllegalArgumentException() //если пустая строка
+    require(expression != "") //если пустая строка
     for (word in expression) { //чтобы не было лишних символов
-        if (word !in legalSymbols) throw IllegalArgumentException()
+        require(word in legalSymbols)
     }
     if (parts.size == 1) { //исключение чтобы не было +2 или 11111- и подобного
         for (symbol in parts[0]) {
-            if (symbol in setOf('+', '-')) throw IllegalArgumentException()
+            require(symbol !in setOf('+', '-'))
         }
     }
-    if (parts.size % 2 == 0) throw IllegalArgumentException() //проверка на нечетность
+    require(parts.size % 2 != 0) //проверка на нечетность
     var i = 2
     while (i <= parts.size - 1) { //проверка чтобы знаки были между цифрами
-        if (parts[i - 1] !in setOf("+", "-")) throw IllegalArgumentException()
+        require(parts[i - 1] in setOf("+", "-"))
         i += 2
     }
     i = 0
     while (i <= parts.size - 1) { //проверка чтобы цифры были положительными
-        if (parts[i].toInt() < 0) throw IllegalArgumentException()
+        require(parts[i].toInt() >= 0)
         i += 2
     }
 
