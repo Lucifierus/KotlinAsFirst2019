@@ -265,7 +265,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
             val myWord = word.toLowerCase().toString() //буква в нижнем
             if (myWord in newDictionary) {
                 var dictWord = newDictionary[myWord]!!
-                if (bigFirst) dictWord = dictWord.capitalize()
+                if (bigFirst && word.toString().contains(Regex("""[А-яA-z]"""))) dictWord = dictWord.capitalize()
                 writer.write(dictWord)
             } else writer.write(word.toString())
         }
