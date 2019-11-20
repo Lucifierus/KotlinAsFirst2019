@@ -267,7 +267,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                 var dictWord = newDictionary[myWord]!!
                 if (bigFirst) dictWord = dictWord.capitalize()
                 writer.write(dictWord)
-            } else writer.write(myWord)
+            } else writer.write(word.toString())
         }
         writer.newLine()
     }
