@@ -362,7 +362,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
 
         var i = 0
 
-        while (i <= line.length - 3) {
+        while (i <= line.length - 2) {
 
             if (line[i].toString() == "*" && line[i + 1].toString() == "*") {
                 if (!openedB) {
@@ -373,6 +373,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     openedB = false
                 }
                 i += 2
+                continue
             }
 
             if (line[i].toString() == "*" && line[i + 1].toString() != "*") {
@@ -384,6 +385,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     openedI = false
                 }
                 i += 1
+                continue
             }
 
             if (line[i].toString() == "~" && line[i + 1].toString() == "~") {
@@ -395,6 +397,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     openedS = false
                 }
                 i += 2
+                continue
             }
 
             writer.write(line[i].toString())
@@ -405,6 +408,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         if (i + 1 in line.indices) writer.write(line[i + 1].toString())
         if (i + 2 in line.indices) writer.write(line[i + 2].toString())
         if (i + 3 in line.indices) writer.write(line[i + 3].toString())
+        if (i + 4 in line.indices) writer.write(line[i + 4].toString())
+        if (i + 5 in line.indices) writer.write(line[i + 5].toString())
     }
     writer.write("</p>")
     writer.write("</body>")
