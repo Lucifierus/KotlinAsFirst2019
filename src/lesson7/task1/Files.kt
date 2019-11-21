@@ -257,6 +257,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     for ((key, value) in dictionary) { ///весь словарь в нижний регистр
         newDictionary[key.toString().toLowerCase()] = value.toLowerCase()
     }
+    val bigBoys = "QWERTYUIOPLKJHGFDSAZXCVBNMЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЁЯЧСМИТЬБЮЁ"
 
     val writer = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
@@ -265,7 +266,8 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
             val myWord = word.toLowerCase().toString() //буква в нижнем
             if (myWord in newDictionary) {
                 var dictWord = newDictionary[myWord]!!
-                if (bigFirst && word.toString().contains(Regex("""[А-яA-z]"""))) dictWord = dictWord.capitalize()
+                //if (bigFirst && word.toString().contains(Regex("""[А-яA-z]"""))) dictWord = dictWord.capitalize()
+                if (bigFirst && word in bigBoys) dictWord = dictWord.capitalize()
                 writer.write(dictWord)
             } else writer.write(word.toString())
         }
