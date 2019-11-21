@@ -345,9 +345,99 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    writer.write("<html>")
+    writer.write("<body>")
+    writer.write("<p>")
+    for (line in File(inputName).readLines()) {
+
+        if (line.isEmpty()) {
+            writer.write("</p>")
+            writer.write("<p>")
+        }
+
+        var openedB = false
+        var openedI = false
+        var openedS = false
+
+        var i = 0
+        while (i <= line.length - 1) {
+
+            if (line[i].toString() == "*" && line[i + 1].toString() == "*") {
+                if (!openedB) {
+                    writer.write("<b>")
+                    openedB = true
+                } else {
+                    writer.write("</b>")
+                    openedB = false
+                }
+                i += 2
+            }
+
+            if (line[i].toString() == "*" && line[i + 1].toString() != "*") {
+                if (!openedI) {
+                    writer.write("<i>")
+                    openedI = true
+                } else {
+                    writer.write("</i>")
+                    openedI = false
+                }
+                i += 1
+            }
+
+            if (line[i].toString() == "~" && line[i + 1].toString() == "~") {
+                if (!openedS) {
+                    writer.write("<s>")
+                    openedS = true
+                } else {
+                    writer.write("</s>")
+                    openedS = false
+                }
+                i += 2
+            }
+
+            writer.write(line[i].toString())
+            i++
+        }
+    }
+    writer.write("</p>")
+    writer.write("</body>")
+    writer.write("</html>")
+    writer.close()
 }
 
+/*
+var myString = line
+
+        if (myString.contains(Regex("""\*\*.*\*\*"""))) {
+            val thisOne = Regex("""\*\*.*\*\*""").findAll(myString, 0)
+            for (element in thisOne) {
+                myString = "<b>" + element.value.filter { it.toString() != "*" } + "</b>"
+                val newString = Regex("""\*\*.*\*\*""").replace(element.value, myString)
+                writer.write(newString)
+                continue
+            }
+        }
+
+        if (myString.contains(Regex("""\*.*\*"""))) {
+            val thisOne = Regex("""\*.*\*""").findAll(myString, 0)
+            for (element in thisOne) {
+                myString = "<i>" + element.value.filter { it.toString() != "*" } + "</i>"
+                val newString = Regex("""\*.*\*""").replace(element.value, myString)
+                writer.write(newString)
+                continue
+            }
+        }
+
+        if (myString.contains(Regex("""\~\~.*\~\~"""))) {
+            val thisOne = Regex("""\~\~.*\~\~""").findAll(myString, 0)
+            for (element in thisOne) {
+                myString = "<s>" + element.value.filter { it.toString() != "*" } + "</s>"
+                val newString = Regex("""\~\~.*\~\~""").replace(element.value, myString)
+                writer.write(newString)
+                continue
+            }
+ */
 /**
  * Сложная
  *
