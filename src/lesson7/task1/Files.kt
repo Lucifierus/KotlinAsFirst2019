@@ -261,15 +261,17 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     val writer = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()) {
         if (line in newDictionary) writer.write(newDictionary[line]!!.toLowerCase())
+        else {
 
-        for (word in line) {
-            val bigFirst = word.toUpperCase() == word //буква большая? logic
-            val myWord = word.toLowerCase().toString() //буква в нижнем
-            if (myWord in newDictionary) {
-                var dictWord = newDictionary[myWord]!!
-                if (bigFirst && word.toString().contains(Regex("""[А-яA-z]"""))) dictWord = dictWord.capitalize()
-                writer.write(dictWord)
-            } else writer.write(word.toString())
+            for (word in line) {
+                val bigFirst = word.toUpperCase() == word //буква большая? logic
+                val myWord = word.toLowerCase().toString() //буква в нижнем
+                if (myWord in newDictionary) {
+                    var dictWord = newDictionary[myWord]!!
+                    if (bigFirst && word.toString().contains(Regex("""[А-яA-z]"""))) dictWord = dictWord.capitalize()
+                    writer.write(dictWord)
+                } else writer.write(word.toString())
+            }
         }
         writer.newLine()
     }
