@@ -361,7 +361,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         var openedS = false
 
         var i = 0
-        while (i <= line.length - 1) {
+
+        while (i <= line.length - 2) {
 
             if (line[i].toString() == "*" && line[i + 1].toString() == "*") {
                 if (!openedB) {
@@ -399,6 +400,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             writer.write(line[i].toString())
             i++
         }
+
+        if (i in line.indices) writer.write(line[i].toString())
     }
     writer.write("</p>")
     writer.write("</body>")
