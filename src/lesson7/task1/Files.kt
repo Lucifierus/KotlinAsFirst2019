@@ -260,18 +260,13 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
 
     val writer = File(outputName).bufferedWriter()
     for (symbol in File(inputName).readText()) {
-
-
-            val bigFirst = symbol.isUpperCase() //буква большая? logic
-            val myWord = symbol.toLowerCase().toString() //буква в нижнем
-            if (myWord in newDictionary) {
-                var dictWord = newDictionary[myWord]!!
-                if (bigFirst) dictWord = dictWord.capitalize()
-                writer.write(dictWord)
-            } else writer.write(symbol.toString())
-
-
-        //writer.newLine()
+        val bigFirst = symbol.isUpperCase() //буква большая? logic
+        val myWord = symbol.toLowerCase().toString() //буква в нижнем
+        if (myWord in newDictionary) {
+            var dictWord = newDictionary[myWord]!!
+            if (bigFirst) dictWord = dictWord.capitalize()
+            writer.write(dictWord)
+        } else writer.write(symbol.toString())
     }
     writer.close()
 }
