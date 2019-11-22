@@ -349,6 +349,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     writer.write("<html>")
     writer.write("<body>")
     writer.write("<p>")
+
+    var openedB = false
+    var openedI = false
+    var openedS = false
+
     for (line in File(inputName).readLines()) {
 
         if (line.isEmpty()) {
@@ -356,9 +361,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             writer.write("<p>")
         }
 
-        var openedB = false
-        var openedI = false
-        var openedS = false
 
         var i = 0
 
