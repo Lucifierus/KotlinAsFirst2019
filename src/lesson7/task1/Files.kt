@@ -353,17 +353,19 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var openedB = false
     var openedI = false
     var openedS = false
-    var pOpened = true //чтобы не было лишних <p>
-    var wasIHere = false
+    var pOpened = true
+    var pLogic = false //чтобы не было лишних <p>
 
 
     for (line in File(inputName).readLines()) {
-        wasIHere = true
+
+        if (line.isNotEmpty()) pLogic = true
+
         if (line.isNotEmpty() && !pOpened) { //если не пуста линия и р не открыто открываю р
             writer.write("<p>")
             pOpened = true
         }
-        if (line.isEmpty() && pOpened) {
+        if (line.isEmpty() && pOpened && pLogic) {
             writer.write("</p>")
             pOpened = false
         }
@@ -425,11 +427,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             } else writer.write(line[i].toString())
         }
     }
+
     if (pOpened) writer.write("</p>")
-    if (!wasIHere) {
-        writer.write("<p>")
-        writer.write("</p>")
-    }
     writer.write("</body>")
     writer.write("</html>")
     writer.close()
