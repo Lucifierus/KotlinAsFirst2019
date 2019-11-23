@@ -367,45 +367,42 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
 
         var i = 0
-        var logic = true
+        val logic = true
         while (logic) {
 
-            if (i + 1 !in line.indices) {
-                logic = false
-                break
-            } else logic = true
+            if (i + 1 !in line.indices) break
 
             if (line[i].toString() == "*" && line[i + 1].toString() == "*") {
-                if (!openedB) {
+                openedB = if (!openedB) {
                     writer.write("<b>")
-                    openedB = true
+                    true
                 } else {
                     writer.write("</b>")
-                    openedB = false
+                    false
                 }
                 i += 2
                 continue
             }
 
             if (line[i].toString() == "*" && line[i + 1].toString() != "*") {
-                if (!openedI) {
+                openedI = if (!openedI) {
                     writer.write("<i>")
-                    openedI = true
+                    true
                 } else {
                     writer.write("</i>")
-                    openedI = false
+                    false
                 }
                 i += 1
                 continue
             }
 
             if (line[i].toString() == "~" && line[i + 1].toString() == "~") {
-                if (!openedS) {
+                openedS = if (!openedS) {
                     writer.write("<s>")
-                    openedS = true
+                    true
                 } else {
                     writer.write("</s>")
-                    openedS = false
+                    false
                 }
                 i += 2
                 continue
@@ -417,12 +414,12 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
 
         if (i in line.indices) {
             if (line[i].toString() == "*") {
-                if (!openedI) {
+                openedI = if (!openedI) {
                     writer.write("<i>")
-                    openedI = true
+                    true
                 } else {
                     writer.write("</i>")
-                    openedI = false
+                    false
                 }
             } else writer.write(line[i].toString())
         }
