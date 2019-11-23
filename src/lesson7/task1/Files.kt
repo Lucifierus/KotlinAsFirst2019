@@ -409,10 +409,10 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 continue
             }
 
+            firstP = false
             writer.write(line[i].toString())
             i++
         }
-        firstP = false
         if (i in line.indices) {
             if (line[i].toString() == "*") {
                 openedI = if (!openedI) {
