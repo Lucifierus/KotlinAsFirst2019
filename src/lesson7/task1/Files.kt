@@ -359,12 +359,18 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         if (line.isEmpty()) {
             writer.write("</p>")
             writer.write("<p>")
+            continue
         }
 
-
         var i = 0
+        var logic = true
+        while (logic) {
+            //while (i <= line.length - 2) {
 
-        while (i <= line.length - 2) {
+            if (i+1 !in line.indices) {
+                logic = false
+                break
+            } else logic = true
 
             if (line[i].toString() == "*" && line[i + 1].toString() == "*") {
                 if (!openedB) {
@@ -404,14 +410,26 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
 
             writer.write(line[i].toString())
             i++
+
         }
 
-        if (i in line.indices) writer.write(line[i].toString())
-        if (i + 1 in line.indices) writer.write(line[i + 1].toString())
-        if (i + 2 in line.indices) writer.write(line[i + 2].toString())
-        if (i + 3 in line.indices) writer.write(line[i + 3].toString())
-        if (i + 4 in line.indices) writer.write(line[i + 4].toString())
-        if (i + 5 in line.indices) writer.write(line[i + 5].toString())
+        if (i in line.indices) {
+            if (line[i].toString() == "*")  {
+                if (!openedI) {
+                    writer.write("<i>")
+                    openedI = true
+                } else {
+                    writer.write("</i>")
+                    openedI = false
+                }
+            }
+            else writer.write(line[i].toString())
+        }
+        //if (i + 1 in line.indices) writer.write(line[i + 1].toString())
+        //if (i + 2 in line.indices) writer.write(line[i + 2].toString())
+        //if (i + 3 in line.indices) writer.write(line[i + 3].toString())
+        //if (i + 4 in line.indices) writer.write(line[i + 4].toString())
+        //if (i + 5 in line.indices) writer.write(line[i + 5].toString())
     }
     writer.write("</p>")
     writer.write("</body>")
