@@ -359,7 +359,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         if (line.isEmpty()) {
             writer.write("</p>")
             writer.write("<p>")
-            //continue
+            continue
         }
 
         var i = 0
@@ -413,7 +413,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
 
         if (i in line.indices) {
-            if (line[i].toString() == "*")  {
+            if (line[i].toString() == "*") {
                 if (!openedI) {
                     writer.write("<i>")
                     openedI = true
