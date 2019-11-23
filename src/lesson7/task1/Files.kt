@@ -348,12 +348,12 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     writer.write("<html>")
     writer.write("<body>")
-    //writer.write("<p>")
+    writer.write("<p>")
 
     var openedB = false
     var openedI = false
     var openedS = false
-    var pOpened = false //чтобы не было лишних <p>
+    var pOpened = true //чтобы не было лишних <p>
 
     for (line in File(inputName).readLines()) {
 
