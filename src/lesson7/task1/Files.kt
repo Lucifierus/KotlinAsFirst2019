@@ -353,21 +353,23 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var openedB = false
     var openedI = false
     var openedS = false
+    var pLogic = true //чтобы не было лишних <p>
 
     for (line in File(inputName).readLines()) {
 
-        if (line.isEmpty()) {
+        if (line.isEmpty() && pLogic) {
             writer.write("</p>")
             writer.write("<p>")
+            pLogic = false
             continue
         }
 
         var i = 0
         var logic = true
         while (logic) {
-            //while (i <= line.length - 2) {
+            pLogic = true
 
-            if (i+1 !in line.indices) {
+            if (i + 1 !in line.indices) {
                 logic = false
                 break
             } else logic = true
@@ -431,38 +433,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     writer.close()
 }
 
-/*
-var myString = line
-
-        if (myString.contains(Regex("""\*\*.*\*\*"""))) {
-            val thisOne = Regex("""\*\*.*\*\*""").findAll(myString, 0)
-            for (element in thisOne) {
-                myString = "<b>" + element.value.filter { it.toString() != "*" } + "</b>"
-                val newString = Regex("""\*\*.*\*\*""").replace(element.value, myString)
-                writer.write(newString)
-                continue
-            }
-        }
-
-        if (myString.contains(Regex("""\*.*\*"""))) {
-            val thisOne = Regex("""\*.*\*""").findAll(myString, 0)
-            for (element in thisOne) {
-                myString = "<i>" + element.value.filter { it.toString() != "*" } + "</i>"
-                val newString = Regex("""\*.*\*""").replace(element.value, myString)
-                writer.write(newString)
-                continue
-            }
-        }
-
-        if (myString.contains(Regex("""\~\~.*\~\~"""))) {
-            val thisOne = Regex("""\~\~.*\~\~""").findAll(myString, 0)
-            for (element in thisOne) {
-                myString = "<s>" + element.value.filter { it.toString() != "*" } + "</s>"
-                val newString = Regex("""\~\~.*\~\~""").replace(element.value, myString)
-                writer.write(newString)
-                continue
-            }
- */
 /**
  * Сложная
  *
