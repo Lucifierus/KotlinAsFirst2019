@@ -415,6 +415,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
 
         if (i in line.indices) {
+            pLogic = true
             if (line[i].toString() == "*") {
                 if (!openedI) {
                     writer.write("<i>")
@@ -423,8 +424,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     writer.write("</i>")
                     openedI = false
                 }
-            }
-            else writer.write(line[i].toString())
+            } else writer.write(line[i].toString())
         }
     }
     writer.write("</p>")
