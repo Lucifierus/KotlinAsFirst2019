@@ -353,9 +353,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var openedB = false
     var openedI = false
     var openedS = false
-    var pLogic = true //чтобы не было лишних <p>
+    var pLogic = false //чтобы не было лишних <p>
 
     for (line in File(inputName).readLines()) {
+
+        if (line.isNotEmpty()) pLogic = true
 
         if (line.isEmpty() && pLogic) {
             writer.write("</p>")
@@ -367,7 +369,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         var i = 0
         var logic = true
         while (logic) {
-            pLogic = true
 
             if (i + 1 !in line.indices) {
                 logic = false
@@ -415,7 +416,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
 
         if (i in line.indices) {
-            pLogic = true
             if (line[i].toString() == "*") {
                 if (!openedI) {
                     writer.write("<i>")
