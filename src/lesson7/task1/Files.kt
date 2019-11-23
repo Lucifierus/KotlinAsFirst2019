@@ -360,7 +360,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     for (line in File(inputName).readLines()) {
 
         if (line.isNotEmpty()) pLogic = true
-
         if (line.isNotEmpty() && !pOpened) { //если не пуста линия и р не открыто открываю р
             writer.write("<p>")
             pOpened = true
@@ -373,9 +372,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         var i = 0
         val logic = true
         while (logic) {
-
             if (i + 1 !in line.indices) break
-
             if (line[i].toString() == "*" && line[i + 1].toString() == "*") {
                 openedB = if (!openedB) {
                     writer.write("<b>")
@@ -387,7 +384,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 i += 2
                 continue
             }
-
             if (line[i].toString() == "*" && line[i + 1].toString() != "*") {
                 openedI = if (!openedI) {
                     writer.write("<i>")
@@ -399,7 +395,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 i += 1
                 continue
             }
-
             if (line[i].toString() == "~" && line[i + 1].toString() == "~") {
                 openedS = if (!openedS) {
                     writer.write("<s>")
@@ -415,7 +410,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             writer.write(line[i].toString())
             i++
         }
-        if (i in line.indices) {
+        if (i in line.indices) { //проверка последнего символа
             if (line[i].toString() == "*") {
                 openedI = if (!openedI) {
                     writer.write("<i>")
