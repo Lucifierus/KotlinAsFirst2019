@@ -348,21 +348,22 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     writer.write("<html>")
     writer.write("<body>")
-    writer.write("<p>")
+    //writer.write("<p>")
 
     var openedB = false
     var openedI = false
     var openedS = false
-    var pOpened = true //чтобы не было лишних <p>
-    var firstP = true //я в первый раз открыл р
+    var pOpened = false //чтобы не было лишних <p>
+    var wasIHere = false
+
 
     for (line in File(inputName).readLines()) {
-
+        wasIHere = true
         if (line.isNotEmpty() && !pOpened) { //если не пуста линия и р не открыто открываю р
             writer.write("<p>")
             pOpened = true
         }
-        if (line.isEmpty() && pOpened && !firstP) {
+        if (line.isEmpty() && pOpened) {
             writer.write("</p>")
             pOpened = false
         }
@@ -409,7 +410,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 continue
             }
 
-            firstP = false
             writer.write(line[i].toString())
             i++
         }
@@ -426,6 +426,10 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
     }
     if (pOpened) writer.write("</p>")
+    if (!wasIHere) {
+        writer.write("<p>")
+        writer.write("</p>")
+    }
     writer.write("</body>")
     writer.write("</html>")
     writer.close()
