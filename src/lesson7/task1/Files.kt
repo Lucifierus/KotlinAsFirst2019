@@ -354,6 +354,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var openedI = false
     var openedS = false
     var pOpened = true //чтобы не было лишних <p>
+    var firstP = true //я в первый раз открыл р
 
     for (line in File(inputName).readLines()) {
 
@@ -361,18 +362,10 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             writer.write("<p>")
             pOpened = true
         }
-        if (line.isEmpty() && pOpened) {
+        if (line.isEmpty() && pOpened && !firstP) {
             writer.write("</p>")
             pOpened = false
         }
-        /*if (line.isNotEmpty()) pOpened = true
-
-        if (line.isEmpty() && pOpened) {
-            writer.write("</p>")
-            writer.write("<p>")
-            pOpened = false
-            continue
-        } */
 
         var i = 0
         val logic = true
@@ -419,7 +412,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             writer.write(line[i].toString())
             i++
         }
-
+        firstP = false
         if (i in line.indices) {
             if (line[i].toString() == "*") {
                 openedI = if (!openedI) {
