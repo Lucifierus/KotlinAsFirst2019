@@ -88,32 +88,28 @@ fun sibilants(inputName: String, outputName: String) {
         'ч' to 'ы', 'ч' to 'ю', 'ч' to 'я',
         'щ' to 'ы', 'щ' to 'ю', 'щ' to 'я'
     )
+    val mapOfWordCorrection = mapOf("ы" to "и", "Ы" to "И", "я" to "а", "Я" to "А", "ю" to "у", "Ю" to "У")
 
-    val writer = File(outputName).bufferedWriter()
-    for (line in File(inputName).readLines()) { //смотрю по линии
-        writer.write(line[0].toString()) //запись первого символа
-        for (i in 1 until line.length) { //по букве в линии
-            var mistake = false
-            for ((first, second) in mistakes) { //проверяю принадлежность к ошибкам
-                if (first == line[i - 1].toLowerCase() && second == line[i].toLowerCase()) mistake = true
-            }
+    File(outputName).bufferedWriter().use {
+        for (line in File(inputName).readLines()) { //смотрю по линии
+            if (line.isEmpty()) continue
+            it.write(line[0].toString()) //запись первого символа
+            for (i in 1 until line.length) { //по букве в линии
+                var mistake = false
+                for ((first, second) in mistakes) { //проверяю принадлежность к ошибкам
+                    if (first == line[i - 1].toLowerCase() && second == line[i].toLowerCase()) mistake = true
+                }
 
-            if (!mistake) { //если ошибок нет, то записываю символ как есть
-                writer.write(line[i].toString())
-            } else { //иначе проверяю регистр и заменяю
-                when (line[i].toString()) {
-                    "ы" -> writer.write("и")
-                    "Ы" -> writer.write("И")
-                    "я" -> writer.write("а")
-                    "Я" -> writer.write("А")
-                    "ю" -> writer.write("у")
-                    "Ю" -> writer.write("У")
+                if (!mistake) { //если ошибок нет, то записываю символ как есть
+                    it.write(line[i].toString())
+                } else { //иначе проверяю регистр и заменяю
+                    it.write(mapOfWordCorrection[line[i].toString()] ?: error(""))
                 }
             }
+            it.newLine()
         }
-        writer.newLine()
+        it.close()
     }
-    writer.close()
 }
 
 /**
@@ -192,7 +188,7 @@ fun top20Words(inputName: String): Map<String, Int> {
     for (line in File(inputName).readLines()) { //по линии
         val words = Regex("""[А-яA-zёЁ]+""").findAll(line)
         for (element in words) {
-            if (element.value != "") myList.add(element.value.toLowerCase())
+            myList.add(element.value.toLowerCase())
         }
     }
 
@@ -355,7 +351,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var openedS = false
     var pOpened = true
     var pLogic = false //чтобы не было лишних <p>
-
 
     for (line in File(inputName).readLines()) {
 
