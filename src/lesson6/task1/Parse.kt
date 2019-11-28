@@ -79,7 +79,7 @@ val listOfMonths = listOf(
 fun dateStrDigitChecker(day: Int, month: Int, year: Int): Boolean = day <= daysInMonth(month, year)
 
 fun dateStrToDigit(str: String): String {
-    if (!str.contains(Regex("""[0-9]+\s[а-я]+\s[0-9]+"""))) return "" //checker
+    if (!str.matches(Regex("""[0-9]+\s[а-я]+\s[0-9]+"""))) return "" //checker
     val parts = str.split(" ")
     val day = parts[0].toIntOrNull()
     val year = parts[2].toIntOrNull()
@@ -101,7 +101,7 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    if (!digital.contains(Regex("""[0-9]+\.[0-9]+\.[0-9]+"""))) return ""
+    if (!digital.matches(Regex("""[0-9]+\.[0-9]+\.[0-9]+"""))) return ""
     val parts = digital.split(".")
     val day = parts[0].toIntOrNull()
     val month = parts[1].toIntOrNull()
@@ -130,7 +130,7 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    val answer = phone.filter { it !in listOf('(', ')', '-', ' ') }
+    val answer = phone.filter { it !in setOf('(', ')', '-', ' ') }
     val setOfLegal = setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '(', ')', '+', ' ')
     val checker1 = phone.toSet().union(setOfLegal) == setOfLegal //проверка на посторонние символы
     val checker2 = answer.contains(Regex("""[0123456789]""")) //проверка есть ли вообще цифры
@@ -139,7 +139,7 @@ fun flattenPhoneNumber(phone: String): String {
     var checker5 = true
 
     if ('+' in answer) {
-        checker3 = answer.contains(Regex("""("+")?""")) //проверка на количество символов +
+        checker3 = answer.matches(Regex("""(\+)?[0-9]*""")) //проверка на количество символов +
         checker5 = phone[0] == '+' // проверяет, если есть плюс, на первом ли он месте
     }
 
@@ -164,11 +164,7 @@ fun flattenPhoneNumber(phone: String): String {
  */
 fun bestLongJump(jumps: String): Int {
     var answer = -1
-    val checker1 = jumps.contains(Regex("""[0-9]+\s(([%\-])\s)*"""))
-    val setOfChars = setOf(' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '%')
-    val checker2 = jumps.toSet().union(setOfChars) == setOfChars
-    if (!checker1 || !checker2) return answer
-
+    if (!jumps.matches(Regex("""(\d+|-|%)(\s(\d+|-|%))*"""))) return answer
     val jump = jumps.split(" ", "%", "-")
     for (part in jump) {
         if (part != "" && part.toInt() > answer) answer = part.toInt()
@@ -273,7 +269,7 @@ fun firstDuplicateIndex(str: String): Int {
  */
 fun mostExpensive(description: String): String {
     var answer = ""
-    if (!description.contains(Regex("""[^ ]+\s[0-9]+(\.[0-9])?(;\s[^ ]+\s[0-9]+(\.[0-9])?)*"""))) return answer
+    if (!description.matches(Regex("""[^ ]+\s[0-9]+(\.[0-9])?(;\s[^ ]+\s[0-9]+(\.[0-9])?)*"""))) return answer
     var maxPrice = 0.0
     val allPairs = mutableListOf<Pair<String, Double>>()
     val parts = description.split("; ")
