@@ -269,7 +269,7 @@ fun firstDuplicateIndex(str: String): Int {
  */
 fun mostExpensive(description: String): String {
     var answer = ""
-    if (!description.matches(Regex("""[^ ]+\s[0-9]+(\.[0-9])?(;\s[^ ]+\s[0-9]+(\.[0-9])?)*"""))) return answer
+    if (!description.matches(Regex("""[^ ]+\s[0-9]+(\.[0-9]+)?(;\s[^ ]+\s[0-9]+(\.[0-9]+)?)*"""))) return answer
     var maxPrice = 0.0
     val allPairs = mutableListOf<Pair<String, Double>>()
     val parts = description.split("; ")
