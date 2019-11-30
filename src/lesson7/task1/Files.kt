@@ -103,12 +103,11 @@ fun sibilants(inputName: String, outputName: String) {
                 if (!mistake) { //если ошибок нет, то записываю символ как есть
                     it.write(line[i].toString())
                 } else { //иначе проверяю регистр и заменяю
-                    it.write(mapOfWordCorrection[line[i].toString()] ?: error(""))
+                    it.write(mapOfWordCorrection[line[i].toString()]!!)
                 }
             }
             it.newLine()
         }
-        it.close()
     }
 }
 
@@ -198,19 +197,9 @@ fun top20Words(inputName: String): Map<String, Int> {
 
     val sortedMap = answer.toList().sortedByDescending { it.second }.toMap() //сортировка map по value
 
-    if (answer.size <= 20) { //если меньше 20 различных слов
-        return answer
-    }
-
-    val newTop20 = mutableMapOf<String, Int>() //если больше 20 различных слов
-    var i = 0 //counter
-    for ((key, value) in sortedMap) {
-        if (i < 20) {
-            newTop20[key] = value
-        } else break
-        i++
-    }
-    return newTop20
+    return if (answer.size <= 20) { //если меньше 20 различных слов
+        answer
+    } else sortedMap.toList().sortedByDescending { it.second }.take(20).toMap()
 }
 
 /**

@@ -185,6 +185,7 @@ fun bestLongJump(jumps: String): Int {
  */
 fun bestHighJump(jumps: String): Int {
     var answer = -1
+    if (!jumps.matches(Regex("""\d+\s(\+|\%|\-)+((\s\d+\s(\-|\+|\%)+)?)*"""))) return -1
     val parts = jumps.split(" ")
     for (i in parts.indices) {
         if (parts[i].contains("+") && parts[i - 1].toInt() > answer) {
@@ -204,12 +205,12 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    val legalSymbols = setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', ' ')
+    val legalSymbols = setOf('+', '-', ' ')
     val parts = expression.split(" ")
 
     require(expression != "") //если пустая строка
     for (word in expression) { //чтобы не было лишних символов
-        require(word in legalSymbols)
+        require(word in '0'..'9' || word in legalSymbols)
     }
     if (parts.size == 1) { //исключение чтобы не было +2 или 11111- и подобного
         for (symbol in parts[0]) {
