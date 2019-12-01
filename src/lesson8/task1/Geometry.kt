@@ -3,10 +3,9 @@
 package lesson8.task1
 
 import lesson1.task1.sqr
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import lesson1.task1.trackLength
+import lesson2.task2.circleInside
+import kotlin.math.*
 
 /**
  * Точка на плоскости
@@ -79,7 +78,15 @@ data class Circle(val center: Point, val radius: Double) {
      * расстояние между их центрами минус сумма их радиусов.
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
-    fun distance(other: Circle): Double = TODO()
+    fun distance(other: Circle): Double {
+        //две окружности пересекаются тогда, когда расстояние между центрами меньше суммы их радиусов, но больше модуля их разности
+        val distBetweenCenters = trackLength(center.x, center.y, other.center.x, other.center.y) //расстояние между их центрами
+        val sumRadius = radius + other.radius //сумма радиусов
+        val diffRadius = radius - other.radius //разность радиусов
+        if (distBetweenCenters < sumRadius && distBetweenCenters > abs(diffRadius)) return 0.0 //если не пересекаются
+        if (circleInside(center.x, center.y, radius, other.center.x, other.center.y, other.radius)) return 0.0 //если одна в другой находится целиком
+        return distBetweenCenters - sumRadius //если непересекающиеся
+    }
 
     /**
      * Тривиальная
