@@ -6,6 +6,7 @@ import lesson1.task1.sqr
 import lesson1.task1.trackLength
 import lesson2.task2.circleInside
 import lesson2.task2.pointInsideCircle
+import java.lang.IllegalArgumentException
 import kotlin.math.*
 
 /**
@@ -122,7 +123,17 @@ fun diameter(vararg points: Point): Segment = TODO()
  * Построить окружность по её диаметру, заданному двумя точками
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
-fun circleByDiameter(diameter: Segment): Circle = TODO()
+fun circleByDiameter(diameter: Segment): Circle {
+    val x1 = diameter.begin.x
+    val y1 = diameter.begin.y
+    val x2 = diameter.end.x
+    val y2 = diameter.end.y
+    val dia = trackLength(x1, y1, x2, y2)
+    val radius = dia / 2
+    val x0 = (x1 + x2) / 2
+    val y0 = (y1 + y2) / 2
+    return Circle(Point(x0, y0), radius)
+}
 
 /**
  * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
