@@ -5,6 +5,7 @@ package lesson8.task1
 import lesson1.task1.sqr
 import lesson1.task1.trackLength
 import lesson2.task2.circleInside
+import lesson2.task2.pointInsideCircle
 import kotlin.math.*
 
 /**
@@ -93,7 +94,7 @@ data class Circle(val center: Point, val radius: Double) {
      *
      * Вернуть true, если и только если окружность содержит данную точку НА себе или ВНУТРИ себя
      */
-    fun contains(p: Point): Boolean = TODO()
+    fun contains(p: Point): Boolean = pointInsideCircle(p.x, p.y, center.x, center.y, radius)
 }
 
 /**
