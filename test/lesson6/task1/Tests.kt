@@ -68,6 +68,7 @@ class Tests {
         assertEquals("", flattenPhoneNumber("ab-123"))
         assertEquals("", flattenPhoneNumber("134_+874"))
         assertEquals("", flattenPhoneNumber("++(6)"))
+        assertEquals("", flattenPhoneNumber("+(6)"))
     }
 
     @Test

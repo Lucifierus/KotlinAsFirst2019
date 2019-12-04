@@ -137,10 +137,12 @@ fun flattenPhoneNumber(phone: String): String {
     var checker3 = true
     var checker4 = true
     var checker5 = true
+    var checker6 = true
 
     if ('+' in answer) {
-        checker3 = answer.matches(Regex("""(\+)?[0-9]*""")) //проверка на количество символов +
+        checker3 = answer.matches(Regex("""\+[0-9]*""")) //проверка на количество символов +
         checker5 = phone[0] == '+' // проверяет, если есть плюс, на первом ли он месте
+        checker6 = answer.matches(Regex("""\+\d\d+""")) //проверка на наличие 2х или более цифр после плюса
     }
 
     if ('(' in phone) {
@@ -148,7 +150,7 @@ fun flattenPhoneNumber(phone: String): String {
         checker4 = something.contains(Regex("""\(\d+\)"""))  //если есть скобки, то проверка на наличие цифр в них
     }
 
-    if (!checker1 || !checker2 || !checker3 || !checker4 || !checker5) return ""
+    if (!checker1 || !checker2 || !checker3 || !checker4 || !checker5 || !checker6) return ""
     return answer
 }
 
@@ -185,7 +187,7 @@ fun bestLongJump(jumps: String): Int {
  */
 fun bestHighJump(jumps: String): Int {
     var answer = -1
-    if (!jumps.matches(Regex("""\d+\s(\+|\%|\-)+((\s\d+\s(\-|\+|\%)+)?)*"""))) return -1
+    if (!jumps.matches(Regex("""\d+\s([+%\-])+(\s\d+\s([-+%])+)*"""))) return -1
     val parts = jumps.split(" ")
     for (i in parts.indices) {
         if (parts[i].contains("+") && parts[i - 1].toInt() > answer) {
@@ -205,30 +207,8 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    val legalSymbols = setOf('+', '-', ' ')
+    require(expression.matches(Regex("""\d+(\s([+\-])\s\d+(\s([+\-])\s\d+)*)?""")))
     val parts = expression.split(" ")
-
-    require(expression != "") //если пустая строка
-    for (word in expression) { //чтобы не было лишних символов
-        require(word in '0'..'9' || word in legalSymbols)
-    }
-    if (parts.size == 1) { //исключение чтобы не было +2 или 11111- и подобного
-        for (symbol in parts[0]) {
-            require(symbol !in setOf('+', '-'))
-        }
-    }
-    require(parts.size % 2 != 0) //проверка на нечетность
-    var i = 2
-    while (i <= parts.size - 1) { //проверка чтобы знаки были между цифрами
-        require(parts[i - 1] in setOf("+", "-"))
-        i += 2
-    }
-    i = 0
-    while (i <= parts.size - 1) { //проверка чтобы цифры были положительными
-        require(parts[i].toInt() >= 0)
-        i += 2
-    }
-
     var answer = parts[0].toInt()
     for (z in 1..parts.size - 2 step 2) {
         if (parts[z] == "+") answer += parts[z + 1].toInt()
