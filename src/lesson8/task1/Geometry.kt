@@ -4,9 +4,7 @@ package lesson8.task1
 
 import lesson1.task1.sqr
 import lesson1.task1.trackLength
-import lesson2.task2.circleInside
 import lesson2.task2.pointInsideCircle
-import java.lang.IllegalArgumentException
 import kotlin.math.*
 
 /**
@@ -82,12 +80,11 @@ data class Circle(val center: Point, val radius: Double) {
      */
     fun distance(other: Circle): Double {
         //две окружности пересекаются тогда, когда расстояние между центрами меньше суммы их радиусов, но больше модуля их разности
-        val distBetweenCenters = trackLength(center.x, center.y, other.center.x, other.center.y) //расстояние между их центрами
+        val distBetweenCenters = trackLength(center.x, center.y, other.center.x, other.center.y)
         val sumRadius = radius + other.radius //сумма радиусов
         val diffRadius = radius - other.radius //разность радиусов
         if (distBetweenCenters < sumRadius && distBetweenCenters > abs(diffRadius)) return 0.0 //если не пересекаются
-        if (circleInside(center.x, center.y, radius, other.center.x, other.center.y, other.radius)) return 0.0 //если одна в другой находится целиком
-        return distBetweenCenters - sumRadius //если непересекающиеся
+        return distBetweenCenters - sumRadius //если пересекающиеся
     }
 
     /**
@@ -115,7 +112,22 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
+fun diameter(vararg points: Point): Segment {
+    require(points.size >= 2)
+    var resultTrackLength = Double.MIN_VALUE
+    var ansSegment = Segment(points[0], points[1])
+
+    for (myPoint1 in points) {
+        for (myPoint2 in points) {
+            if (myPoint1 == myPoint2) continue
+            if (trackLength(myPoint1.x, myPoint1.y, myPoint2.x, myPoint2.y) >= resultTrackLength) {
+                resultTrackLength = trackLength(myPoint1.x, myPoint1.y, myPoint2.x, myPoint2.y)
+                ansSegment = Segment(myPoint1, myPoint2)
+            }
+        }
+    }
+    return ansSegment
+}
 
 /**
  * Простая
