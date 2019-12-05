@@ -160,4 +160,13 @@ class Tests {
         assertThrows(IllegalArgumentException::class.java) { computeDeviceCells(10, "+>+>[+>", 3) }
         assertThrows(IllegalStateException::class.java) { computeDeviceCells(20, ">>>>>>>>>>>>>", 12) }
     }
+
+    @Test
+    @Tag("MyTag")
+    fun moneyCoin() {
+        assertEquals(listOf(1 to 5000.0, 1 to 1000.0, 2 to 100.0, 2 to 20.0, 1 to 10.0), moneyCoin(sum = 6250.0, coins = "5000, 4000, 3000, 2000, 1000, 900, 600, 100, 20, 10, 5"))
+        assertEquals(listOf(1 to 5000.0, 2 to 1000.0, 1 to 500.0, 1 to 100.0, 3 to 10.0, 1 to 2.0, 1 to 1.0, 2 to 0.10, 1 to 0.01), moneyCoin(sum = 7633.21, coins = "5000, 1000, 500, 100, 50, 10, 5, 2, 1, 0.5, 0.1, 0.05, 0.01"))
+        assertThrows(IllegalArgumentException::class.java) { moneyCoin(sum = 653.0, coins = "34 34") }
+        assertThrows(IllegalArgumentException::class.java) { moneyCoin(sum = 653.0, coins = "34,3") }
+    }
 }

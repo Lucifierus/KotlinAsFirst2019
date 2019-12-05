@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import java.lang.IllegalArgumentException
 
 /**
  * Пример
@@ -319,3 +320,33 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+
+fun moneyCoin(sum: Double, coins: String): List<Pair<Int, Double>> {
+    require(coins.matches(Regex("""\d+(\.\d+)?(,\s\d+(\.\d+)?)*""")))
+    val parts = coins.split(", ")
+    val listOfMoney = mutableListOf<Double>()
+    for (part in parts) {
+        listOfMoney.add(part.toDouble())
+    }
+    var newSum = sum
+    var i = 0
+    val listMyCoins = mutableListOf<String>()
+    while (newSum >= 0.000001) {
+        if (newSum >= listOfMoney[i]) {
+            newSum -= listOfMoney[i]
+            listMyCoins.add(listOfMoney[i].toString())
+        } else i++
+    }
+
+    val mapOfNumberCoins = mutableMapOf<String, Int>()
+    for (element in listMyCoins) {
+        mapOfNumberCoins[element] = mapOfNumberCoins.getOrDefault(element, 0) + 1
+    }
+
+    val myPairs = mutableListOf<Pair<Int, Double>>()
+    for ((key, value) in mapOfNumberCoins) {
+        myPairs.add(value to key.toDouble())
+    }
+    return myPairs
+}
