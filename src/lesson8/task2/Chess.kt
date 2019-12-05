@@ -22,7 +22,10 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String = TODO()
+    fun notation(): String {
+        if (!inside()) return ""
+        return (column.toChar() + 'a'.toInt() - 1).toString() + row
+    }
 }
 
 /**
@@ -32,7 +35,12 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
-fun square(notation: String): Square = TODO()
+fun square(notation: String): Square {
+    require(notation.length == 2)
+    val first = (notation[0] - 'a'.toInt() + 1).toInt()
+    val second = notation[1].toString().toInt()
+    return Square(first, second)
+}
 
 /**
  * Простая
@@ -57,7 +65,14 @@ fun square(notation: String): Square = TODO()
  * Пример: rookMoveNumber(Square(3, 1), Square(6, 3)) = 2
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
-fun rookMoveNumber(start: Square, end: Square): Int = TODO()
+fun rookMoveNumber(start: Square, end: Square): Int {
+    require(start.inside() && end.inside())
+    val one = start.column == end.column
+    val two = start.row == end.row
+    if (one && !two || !one && two) return 1
+    if (!one && !two) return 2
+    return 0
+}
 
 /**
  * Средняя
@@ -73,7 +88,13 @@ fun rookMoveNumber(start: Square, end: Square): Int = TODO()
  *          rookTrajectory(Square(3, 5), Square(8, 5)) = listOf(Square(3, 5), Square(8, 5))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun rookTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun rookTrajectory(start: Square, end: Square): List<Square> {
+    val answer = mutableListOf<Square>()
+    if (rookMoveNumber(start, end) >= 0) answer.add(start)
+    if (rookMoveNumber(start, end) >= 1) answer.add(1, end)
+    if (rookMoveNumber(start, end) == 2) answer.add(1, Square(start.column, end.row))
+    return answer
+}
 
 /**
  * Простая
