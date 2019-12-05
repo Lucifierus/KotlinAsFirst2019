@@ -79,11 +79,9 @@ data class Circle(val center: Point, val radius: Double) {
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
     fun distance(other: Circle): Double {
-        //две окружности пересекаются тогда, когда расстояние между центрами меньше суммы их радиусов, но больше модуля их разности
         val distBetweenCenters = trackLength(center.x, center.y, other.center.x, other.center.y)
         val sumRadius = radius + other.radius //сумма радиусов
-        val diffRadius = radius - other.radius //разность радиусов
-        if (distBetweenCenters < sumRadius && distBetweenCenters > abs(diffRadius)) return 0.0 //если не пересекаются
+        if (distBetweenCenters < sumRadius) return 0.0
         return distBetweenCenters - sumRadius //если пересекающиеся
     }
 
