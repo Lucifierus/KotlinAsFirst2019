@@ -36,7 +36,7 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    require(notation.length == 2)
+    require(notation.length == 2 && notation[1] in "0123456789")
     val first = (notation[0] - 'a'.toInt() + 1).toInt()
     val second = notation[1].toString().toInt()
     return Square(first, second)
