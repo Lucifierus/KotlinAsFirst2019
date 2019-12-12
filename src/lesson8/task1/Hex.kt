@@ -40,7 +40,8 @@ data class HexPoint(val x: Int, val y: Int) {
     fun distance(other: HexPoint): Int {
         val deltaX = abs(other.x - x)
         val deltaY = abs(other.y - y)
-        return maxOf(deltaX, deltaY)
+        val deltaXY = abs(x + y - other.x - other.y)
+        return (deltaX + deltaY + deltaXY) / 2
     }
 
     override fun toString(): String = "$y.$x"
