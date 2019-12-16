@@ -79,7 +79,7 @@ data class Circle(val center: Point, val radius: Double) {
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
     fun distance(other: Circle): Double {
-        val distBetweenCenters = trackLength(center.x, center.y, other.center.x, other.center.y)
+        val distBetweenCenters = center.distance(other.center)
         val sumRadius = radius + other.radius //сумма радиусов
         if (distBetweenCenters < sumRadius) return 0.0
         return distBetweenCenters - sumRadius //если пересекающиеся
@@ -118,8 +118,8 @@ fun diameter(vararg points: Point): Segment {
     for (myPoint1 in points) {
         for (myPoint2 in points) {
             if (myPoint1 == myPoint2) continue
-            if (trackLength(myPoint1.x, myPoint1.y, myPoint2.x, myPoint2.y) >= resultTrackLength) {
-                resultTrackLength = trackLength(myPoint1.x, myPoint1.y, myPoint2.x, myPoint2.y)
+            if (myPoint1.distance(myPoint2) >= resultTrackLength) {
+                resultTrackLength = myPoint1.distance(myPoint2)
                 ansSegment = Segment(myPoint1, myPoint2)
             }
         }
@@ -167,6 +167,7 @@ class Line private constructor(val b: Double, val angle: Double) {
     fun crossPoint(other: Line): Point {
         val divisor1 = sin(angle) * cos(other.angle) - sin(other.angle) * cos(angle)
         val divisor2 = cos(angle) * sin(other.angle) - cos(other.angle) * sin(angle)
+        if (divisor1 == 0.0 || divisor2 == 0.0) throw ArithmeticException()
         val x = (other.b * cos(angle) - b * cos(other.angle)) / divisor1
         val y = (sin(other.angle) * b - sin(angle) * other.b) / divisor2
         return Point(x, y)

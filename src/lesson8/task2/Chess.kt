@@ -2,6 +2,8 @@
 
 package lesson8.task2
 
+import kotlin.math.abs
+
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
  * Поэтому, обе координаты клетки (горизонталь row, вертикаль column) могут находиться в пределах от 1 до 8.
@@ -22,10 +24,7 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String {
-        if (!inside()) return ""
-        return (column.toChar() + 'a'.toInt() - 1).toString() + row
-    }
+    fun notation(): String = if (inside()) "${'a' - 1 + column}$row" else ""
 }
 
 /**
@@ -36,7 +35,7 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    require(notation.length == 2 && notation[1] in "0123456789")
+    require(notation.length == 2 && notation[1] in '0'..'9' && notation[0] in 'a'..'h')
     val first = (notation[0] - 'a'.toInt() + 1).toInt()
     val second = notation[1].toString().toInt()
     return Square(first, second)
@@ -163,8 +162,8 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
  */
 fun kingMoveNumber(start: Square, end: Square): Int {
     require(start.inside() && end.inside())
-    val deltaX = kotlin.math.abs(start.column - end.column)
-    val deltaY = kotlin.math.abs(start.row - end.row)
+    val deltaX = abs(start.column - end.column)
+    val deltaY = abs(start.row - end.row)
     return maxOf(deltaX, deltaY)
 }
 
