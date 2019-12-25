@@ -104,7 +104,19 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
  * 4 5 6      8 5 2
  * 7 8 9      9 6 3
  */
-fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO()
+fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
+    val myHeight = matrix.height
+    val myWidth = matrix.width
+    require(myHeight == myWidth)
+    val answer = createMatrix(myHeight, myWidth, e = matrix[0, 0])
+
+    for (x in 0 until myWidth) {
+        for (y in 0 until myHeight) {
+            answer[x, y] = matrix[myHeight - y - 1, x]
+        }
+    }
+    return answer
+}
 
 /**
  * Сложная
